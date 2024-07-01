@@ -6,6 +6,7 @@ import '../../../../common/custom_button.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
 import '../../../../constant/colors.dart';
+import '../../../../constant/route.dart';
 import 'or_text.dart';
 
 class Students extends StatefulWidget {
@@ -59,9 +60,12 @@ class _StudentsState extends State<Students> {
            title:'Sign In',
            borderRadius: 10,
            onPressed: () {
-             if (_key.currentState!.validate()) {
-
-             }
+             Navigator.pushReplacementNamed(
+                 context, Routes.dashboard);
+             // if (_key.currentState!.validate()) {
+             //   Navigator.pushReplacementNamed(
+             //       context, Routes.dashboard);
+             // }
            },
          ),
          SizedBox(height: 12.h,),

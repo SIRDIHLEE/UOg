@@ -11,11 +11,14 @@ abstract class AppColors {
 
   static const Color textColor = Color(0xffF9F9F9);
 
+
   //Other Colors
 
   static const Color ash = Color(0xffF2F2F2);
 
   static const Color suffixIconColor = Color(0xff263238);
+
+  static const Color navColor = Color(0xffF0F0F0);
 
 
 }
