@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "799848895975",
+    "project_id": "greenwich-app-13d83",
+    "storage_bucket": "greenwich-app-13d83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799848895975:android:5c44d66a64c0f58517d942",
+        "android_client_info": {
+          "package_name": "com.example.uog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdtUZ7tCAVFFeZVN-g2WzXfvsRat4A7bU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
