@@ -25,8 +25,8 @@ class Routes{
 
   //routes
   static final routes = <String, Widget Function(BuildContext)>{
-    // splash : (context) =>  const SplashScreen(),
-    splash : (context) =>  const VirtualToursScreen(),
+    splash : (context) =>  const SplashScreen(),
+    // splash : (context) =>  const VirtualToursScreen(),
     onboarding : (context) =>  const OnBoarding(),
     signIn : (context) =>  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges() ,
