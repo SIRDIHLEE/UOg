@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/dashboard/profile/presentation/views/profile.dart';
@@ -8,14 +8,16 @@ import 'package:uog/src/features/dashboard/settings/presentation/views/settings.
 
 import 'discover/presentation/views/discover.dart';
 import 'home/presentation/views/home.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DashBoard extends StatefulWidget {
-  const DashBoard({super.key});
+  final User? user;
+  const DashBoard({super.key, this.user});
 
   @override
   State<DashBoard> createState() => _DashBoardState();
 }
+
 
 class _DashBoardState extends State<DashBoard> {
   int _currentIndex = 0;

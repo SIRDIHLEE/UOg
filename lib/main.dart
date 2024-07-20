@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/route.dart';
-import 'package:uog/src/features/onboarding/presentation/views/splash_screen.dart';
+// import 'package:uog/src/features/onboarding/presentation/views/splash_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         initialRoute: Routes.splash,
+        
         routes: Routes.routes,
       ),
     );
