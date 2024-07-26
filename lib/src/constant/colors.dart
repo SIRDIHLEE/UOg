@@ -24,6 +24,8 @@ abstract class AppColors {
   static const Color openday = Color(0xff4B5563);
   static const Color tour = Color(0xff132238);
 
+static const Color red = Color.fromARGB(245, 255, 0, 0);
+
 
 
 

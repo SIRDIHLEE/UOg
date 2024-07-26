@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:uog/src/features/announcement/annoucement.dart';
-import 'package:uog/src/features/busservice/busservice.dart';
-import 'package:uog/src/features/dashboard/settings/presentation/views/settings.dart';
-import 'package:uog/src/features/event/events.dart';
-import 'package:uog/src/features/happenings/whatishappening.dart';
-import 'package:uog/src/features/jobs&career/jobs.dart';
-import 'package:uog/src/features/openday/openday.dart';
-import 'package:uog/src/features/virtualtours/virtual_tours.dart';
+import 'package:uog/src/students/dashboard/messages/nomessage.dart';
+import 'package:uog/src/students/dashboard/notification/notifications.dart';
 
 import '../features/auth/presentation/views/signIn.dart';
 import '../features/dashboard/dashboard.dart';
 import '../features/onboarding/presentation/views/onboarding.dart';
-import '../features/onboarding/presentation/views/splash_screen.dart';
+
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class Routes{
@@ -25,8 +19,8 @@ class Routes{
 
   //routes
   static final routes = <String, Widget Function(BuildContext)>{
-    splash : (context) =>  const SplashScreen(),
-    // splash : (context) =>  const VirtualToursScreen(),
+    // splash : (context) =>  const SplashScreen(),
+    splash : (context) =>  const NotificationsScreen(),
     onboarding : (context) =>  const OnBoarding(),
     signIn : (context) =>  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges() ,
