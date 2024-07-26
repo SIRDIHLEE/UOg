@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uog/src/students/dashboard/idcard/id.dart';
 import 'package:uog/src/students/dashboard/messages/nomessage.dart';
 import 'package:uog/src/students/dashboard/notification/notifications.dart';
 import 'package:uog/src/students/dashboard/qrcode/qrcode.dart';
@@ -21,7 +22,7 @@ class Routes{
   //routes
   static final routes = <String, Widget Function(BuildContext)>{
     // splash : (context) =>  const SplashScreen(),
-    splash : (context) =>  const QrCodeScreen(),
+    splash : (context) =>  const IdCardScreen(),
     onboarding : (context) =>  const OnBoarding(),
     signIn : (context) =>  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges() ,
