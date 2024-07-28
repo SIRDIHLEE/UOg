@@ -95,7 +95,6 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                       );
                     },
                   ),
-
                    SizedBox(
                     height: (36.h),
                   ),
@@ -138,7 +137,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
           width: double.infinity,
         ),
         SizedBox(
-          height: 30.h,
+          height: 25.h,
         ),
         RichText(
           textAlign: TextAlign.center,
@@ -155,7 +154,6 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                   style:  TextStyle(
                       color: AppColors.blackColor,
                       fontSize: 24.sp,
-
                       fontWeight: FontWeight.bold)),
             ],
           ),

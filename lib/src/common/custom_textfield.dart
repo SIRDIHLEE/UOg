@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:uog/src/common/custom_text.dart';
 import 'package:uog/src/constant/colors.dart';
 
@@ -41,14 +42,13 @@ class _CustomInputFieldState extends State<CustomInputField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         widget.header == ''
             ? const SizedBox.shrink()
             :  CustomText(
           inputText: widget.header??'',
-          fontSize: 14,
-          weight: FontWeight.w500,
-          color: AppColors.blackColor,),
+          fontSize: 16,
+          weight: FontWeight.w400,
+          color: AppColors.openday,),
         SizedBox(height: widget.header == '' ? 0 : 9.h),
         Center(
           child: TextFormField(
@@ -60,17 +60,23 @@ class _CustomInputFieldState extends State<CustomInputField> {
             enabled: widget.enabled,
             decoration: InputDecoration(
               counterText: '',
-              filled: true,
+              filled: false,
               fillColor: AppColors.ash,
+              contentPadding: EdgeInsets.all(10.sp),
               suffix: Padding(
                 padding:
                 EdgeInsets.only(right: (18.w)),
                 child: widget.suffix,
               ),
-              border: const OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+              border:  OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black.withOpacity(0.50)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+              ),
+
               hintText: widget.inputHintText,
               hintStyle: GoogleFonts.montserrat(
                   fontSize: (14.sp),
@@ -104,12 +110,14 @@ class CustomPasswordInputField extends StatefulWidget {
         required this.onPressed,
         this.onFieldSubmitted,
         this.header,
+        this.headerColor,
         this.onChanged,
         this.onTap});
 
   TextEditingController inputController;
   String inputHintText;
   String? header;
+   Color? headerColor;
   bool isObscured;
   Function(String)? onFieldSubmitted;
   void Function(String)? onChanged;
@@ -186,7 +194,7 @@ class _CustomPasswordInputFieldState extends State<CustomPasswordInputField> {
           inputText: widget.header??'',
           fontSize: 14,
           weight: FontWeight.w500,
-          color: AppColors.blackColor,),
+          color: widget.headerColor??AppColors.blackColor,),
         SizedBox(height: widget.header == '' ? 0 : 9.h),
         TextFormField(
           controller: widget.inputController,
@@ -195,24 +203,28 @@ class _CustomPasswordInputFieldState extends State<CustomPasswordInputField> {
           keyboardType: TextInputType.text,
           autocorrect: false,
           decoration: InputDecoration(
-            filled: true,
+            filled: false,
             fillColor: AppColors.ash,
             suffix: GestureDetector(
               onTap: widget.onPressed,
-              child: Padding(
-                padding:
-                EdgeInsets.only(right: (10.w)),
-                child: Icon(
-                  widget.isObscured ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  color: AppColors.suffixIconColor,
-                  size: (18.sp),
-                ),
+              child: Icon(
+                widget.isObscured ?
+    Iconsax.eye
+                    : Iconsax.eye_slash,
+                color: AppColors.suffixIconColor,
+                size: (18.sp),
               ),
             ),
-            border: const OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+             contentPadding: EdgeInsets.all(10.sp),
+            border:  OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black.withOpacity(0.50)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+            ),
+
             hintText: widget.inputHintText,
             hintStyle: GoogleFonts.montserrat(
                 fontSize: (14.sp),
@@ -258,9 +270,7 @@ class _CustomPasswordInputFieldState extends State<CustomPasswordInputField> {
           },
           onTap: widget.onTap,
         ),
-        SizedBox(
-          height: (5.h),
-        ),
+
       ],
     );
   }
@@ -329,9 +339,14 @@ class _CustomPasswordWithoutValInputFieldState extends State<CustomPasswordWitho
                 ),
               ),
             ),
-            border: const OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+            contentPadding: EdgeInsets.all(10.sp),
+            border:  OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black.withOpacity(0.50)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
             ),
             hintText: widget.inputHintText,
             hintStyle: GoogleFonts.montserrat(
@@ -419,16 +434,21 @@ class _CustomEmailInputFieldState extends State<CustomEmailInputField> {
             autofillHints: const [AutofillHints.email],
             autovalidateMode: AutovalidateMode.disabled,
             decoration: InputDecoration(
-              filled: true,
+              filled: false,
               fillColor: AppColors.ash,
               suffix: Padding(
                 padding:
                 EdgeInsets.only(right: (18.w)),
                 child: widget.suffix,
               ),
-              border: const OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+              contentPadding: EdgeInsets.all(10.sp),
+              border:  OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black.withOpacity(0.50)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
               ),
               hintText: widget.inputHintText,
               hintStyle: GoogleFonts.montserrat(
