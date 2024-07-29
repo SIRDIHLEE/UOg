@@ -30,11 +30,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         initialRoute: Routes.splash,
-        
         routes: Routes.routes,
       ),
     );
   }
 }
-
-

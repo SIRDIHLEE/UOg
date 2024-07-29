@@ -34,12 +34,11 @@ class _StudentsState extends State<Students> {
       provider.setCustomParameters(
           {"tenant": "8faf8922-85dc-4d3c-a024-289010076a45"});
       await FirebaseAuth.instance.signInWithProvider(provider);
-     
     } catch (e) {
       setState(() {
         _error = "An error occured,";
-        
-            _isSending = false;
+
+        _isSending = false;
       });
     }
   }
@@ -90,9 +89,10 @@ class _StudentsState extends State<Students> {
             onPressed: () {
               Navigator.pushReplacementNamed(context, Routes.dashboard);
               // if (_key.currentState!.validate()) {
-              //   Navigator.pushReplacementNamed(
-              //       context, Routes.dashboard);
+              //   Navigator.pushReplacementNamed(context, Routes.dashboard);
               // }
+
+              //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Routes.Dashboard))
             },
           ),
           SizedBox(
