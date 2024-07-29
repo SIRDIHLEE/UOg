@@ -18,7 +18,6 @@ class DashBoard extends StatefulWidget {
   State<DashBoard> createState() => _DashBoardState();
 }
 
-
 class _DashBoardState extends State<DashBoard> {
   int _currentIndex = 0;
 
@@ -34,13 +33,14 @@ class _DashBoardState extends State<DashBoard> {
       _currentIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.navColor,
-        type:BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: onTabTapped,
         items: [
@@ -63,21 +63,24 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
-  BottomNavigationBarItem _buildBottomNavigationBarItem(int index, IconData icon, String label) {
+  BottomNavigationBarItem _buildBottomNavigationBarItem(
+      int index, IconData icon, String label) {
     return BottomNavigationBarItem(
       icon: Padding(
-        padding:  EdgeInsets.only(bottom: 2.h),
+        padding: EdgeInsets.only(bottom: 2.h),
         child: Container(
-          padding:  EdgeInsets.all(8.sp),
+          padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentIndex == index ? AppColors.primaryColor : Colors.white,
+            color:
+                _currentIndex == index ? AppColors.primaryColor : Colors.white,
           ),
-            child: Icon(icon,size:18,color: _currentIndex == index ? Colors.white : Colors.black),
+          child: Icon(icon,
+              size: 18,
+              color: _currentIndex == index ? Colors.white : Colors.black),
         ),
       ),
       label: label,
     );
   }
 }
-
