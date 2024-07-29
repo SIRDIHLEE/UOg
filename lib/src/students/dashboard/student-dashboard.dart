@@ -11,22 +11,25 @@ import 'package:uog/src/students/dashboard/messages/messages.dart';
 // import 'home/presentation/views/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uog/src/students/dashboard/qrcode/qrcode.dart';
+import 'package:uog/src/students/dashboard/schedule/schedule_screen.dart';
 
-class DashBoard extends StatefulWidget {
+import 'dashboard.dart';
+
+class StudentDashBoard extends StatefulWidget {
   final User? user;
-  const DashBoard({super.key, this.user});
+  const StudentDashBoard({super.key, this.user});
 
   @override
-  State<DashBoard> createState() => _DashBoardState();
+  State<StudentDashBoard> createState() => _StudentDashBoardState();
 }
 
 
-class _DashBoardState extends State<DashBoard> {
+class _StudentDashBoardState extends State<StudentDashBoard> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    const DashBoard(),
-    // const ScheduleScreen(),
+    const StudentDashboardScreen(),
+    const ScheduleScreen(),
     const QrCodeScreen(),
     const MessagesScreen(),
     // const VirtualScreen(),

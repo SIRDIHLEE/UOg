@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
+
+import 'module/module.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -12,9 +15,9 @@ class StudentDashboardScreen extends StatefulWidget {
 }
 
 class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
-  String temperature = 'Loading...';
+  String temperature = '...';
   String date = '';
-  final String apiKey = 'c08be28fb67f0ecec65e2ecaeae3c72f';
+  final String apiKey = dotenv.env['API_KEY'] ?? '';
   bool showToday = true;
 
   @override
@@ -52,8 +55,8 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
           child: Text(
             "Hi, Joe Mike",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -65,9 +68,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             child: Row(
               children: [
                 Image.asset(
-                  "assets/images/noti.png",
+                  "assets/images/noti.png", color: Colors.black,
                   height: 25,
                 ),
+                const SizedBox(width: 5,),
                 Image.asset(
                   "assets/images/stuimg.png",
                   height: 40,
@@ -97,7 +101,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 GestureDetector(
@@ -116,7 +120,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -135,13 +139,13 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
           height: 150,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
-                const Color(0xFF60B5D5),
-                const Color(0xFF1D224E),
+                Color(0xFF60B5D5),
+                Color(0xFF1D224E),
               ],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(0.0, 1.0),
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(0.0, 1.0),
             ),
           ),
           child: Row(
@@ -151,16 +155,16 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(8.0, 16, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8.0, 16, 0, 0),
                     child: Text(
                       temperature,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 45,
                         color: AppColors.textColor,
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
                     child: Text("United Kingdom\nLondon",
                         style: TextStyle(
@@ -170,7 +174,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 30,
               ),
               Padding(
@@ -179,12 +183,12 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   children: [
                     Text(
                       date,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    Expanded(
+                    const Expanded(
                         child: Text(
                           "⛅ Light rain|Remember \nto carry a light jacket",
                           style:
@@ -196,7 +200,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Container(
@@ -325,14 +329,6 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   }
 
   Widget buildModulesContent() {
-    return Center(
-      child: Text(
-        "Welcome to Modules",
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
+    return const ModuleOverviewScreen();
   }
 }

@@ -12,6 +12,7 @@ import '../features/onboarding/presentation/views/onboarding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../students/dashboard/dashboard.dart';
+import '../students/dashboard/student-dashboard.dart';
 class Routes{
   //screens
   static const splash = '/';
@@ -25,7 +26,7 @@ class Routes{
   static final routes = <String, Widget Function(BuildContext)>{
     // splash : (context) =>  const SplashScreen(),
     // splash : (context) =>  const IdCardScreen(),
-    splash : (context) =>  const QrCodeScreen(),
+    splash : (context) =>  const StudentDashBoard(),
     onboarding : (context) =>  const OnBoarding(),
     signIn : (context) =>  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges() ,

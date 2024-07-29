@@ -8,32 +8,32 @@ class ModuleOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
-          child: Text(
-            "Hi, Joe Mike",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/images/noti.png",
-                  height: 25,
-                ),
-                Image.asset(
-                  "assets/images/stuimg.png",
-                  height: 40,
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Padding(
+      //     padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
+      //     child: Text(
+      //       "Hi, Joe Mike",
+      //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
+      //     ),
+      //   ),
+      //   actions: [
+      //     Padding(
+      //       padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+      //       child: Row(
+      //         children: [
+      //           Image.asset(
+      //             "assets/images/noti.png",
+      //             height: 25,
+      //           ),
+      //           Image.asset(
+      //             "assets/images/stuimg.png",
+      //             height: 40,
+      //           )
+      //         ],
+      //       ),
+      //     )
+      //   ],
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(

@@ -44,7 +44,6 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
@@ -79,32 +78,20 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
-            style: const ButtonStyle(
-                iconSize: WidgetStatePropertyAll(30),
-                iconColor: WidgetStatePropertyAll(Colors.black38),
-                backgroundColor: WidgetStatePropertyAll(Colors.white70)
-            ),
-            onPressed: (){},
-            icon: Icon(
-                Icons.qr_code_scanner
-            )
+          onPressed: () {
+            setState(() {
+              isFlashOn = !isFlashOn;
+            });
+            cameraController.toggleTorch();
+          },
+          icon: Icon(
+            Icons.flash_on,
+            color: isFlashOn ? Colors.grey : Colors.black,
+          ),
         ),
         actions: [
           IconButton(
-            onPressed: (){
-              setState(() {
-                isFlashOn = !isFlashOn;
-              });
-              cameraController.toggleTorch();
-            },
-            icon: Icon(
-              Icons.flash_on,
-              color: isFlashOn ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-          IconButton(
-              onPressed: (){
+              onPressed: () {
                 setState(() {
                   isFrontCamera = !isFrontCamera;
                 });
@@ -112,55 +99,61 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
               },
               icon: Icon(
                 Icons.flip_camera_android,
-                color: isFrontCamera ? Colors.white
-                    : Colors.black,
-              )
-          ),
+                color: isFrontCamera ? Colors.grey : Colors.black,
+              )),
         ],
       ),
       body: Container(
-          child: Column(children: [
-            Expanded(
-                flex: 2,
-                child: Stack(
-                  children: [
-                    MobileScanner(
-                      allowDuplicates: true,
-                      controller: cameraController,
-                      onDetect: (barcode, args) {
-                        if (!isScanCompleted) {
-                          isScanCompleted = true;
-                          String code = barcode.rawValue ?? "----";
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return QRResult(
-                                  code: code,
-                                  closeScreen: closeScreen,
-                                );
-                              })
-                          );
+          child: Column(
+        children: [
+          Expanded(
+              flex: 2,
+              child: Stack(
+                children: [
+                  MobileScanner(
+                    allowDuplicates: true,
+                    controller: cameraController,
+                    onDetect: (barcode, args) {
+                      if (!isScanCompleted) {
+                        isScanCompleted = true;
+                        String code = barcode.rawValue ?? "";
+                        RegExp regExp = RegExp(r"ID No: (\d+)");
+                        Match? match = regExp.firstMatch(code);
+                        String? studentId;
+                        if (match != null && match.groupCount > 0) {
+                          studentId = match.group(1);
                         }
-                      },
-                    ),
-                    QRScannerOverlay(
-                      overlayColor: Colors.white38,
-                      borderColor: Colors.white,
-                      borderRadius: 20,
-                      borderStrokeWidth: 10,
-                      scanAreaWidth: 250,
-                      scanAreaHeight: 250,
-                    )
-                  ],
-                )
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return QRResult(
+                            code: studentId ?? "Unknown Student ID",
+                            closeScreen: closeScreen,
+                          );
+                        }));
+                      }
+                    },
+                  ),
+                  QRScannerOverlay(
+                    overlayColor: Colors.white38,
+                    borderColor: Colors.white,
+                    borderRadius: 20,
+                    borderStrokeWidth: 5,
+                    scanAreaWidth: 250,
+                    scanAreaHeight: 250,
+                  )
+                ],
+              )),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 10, 20, 20),
+            child: Text(
+              "Align the QR code within the frame to scan it.",
+              style: TextStyle(
+                fontSize: 13,
+              ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 10, 20, 20),
-              child: Text("Align the QR code within the frame to scan it.",
-                style: TextStyle(fontSize: 15,),),
-            ),
-          ],)),
+          ),
+        ],
+      )),
     );
   }
 }
