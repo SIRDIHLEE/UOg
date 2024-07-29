@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uog/src/features/staff_dashboard/home_staff/presentation/widgets/students.dart';
 import 'package:uog/src/students/dashboard/idcard/id.dart';
 import 'package:uog/src/students/dashboard/messages/nomessage.dart';
 import 'package:uog/src/students/dashboard/notification/notifications.dart';
@@ -19,6 +20,7 @@ class Routes{
   static const onboarding = 'onboarding';
   static const signIn = 'signIn';
   static const dashboard = 'dashboard';
+  static const studentsScreen = 'studentsScreen';
 
 
 
@@ -28,6 +30,7 @@ class Routes{
     // splash : (context) =>  const IdCardScreen(),
     splash : (context) =>  const StudentDashBoard(),
     onboarding : (context) =>  const OnBoarding(),
+    studentsScreen: (context) => const StudentsScreen(),
     signIn : (context) =>  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges() ,
       builder: (context, snapshot) {

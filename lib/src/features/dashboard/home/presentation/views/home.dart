@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/colors.dart';
 
 import '../../../../../common/custom_text.dart';
+import '../../../../staff_dashboard/staff_dashboard.dart';
 import '../widgets/announcements_tile.dart';
 import '../widgets/date_card.dart';
 
@@ -28,12 +29,17 @@ class _HomeState extends State<Home> {
               children: [
                 const AnnouncementsTile(),
                 SizedBox(height: 20.h,),
-                CustomText(
-                  inputText: "Whats happening?",
-                  textAlign: TextAlign.center,
-                  fontSize: 15,
-                  weight: FontWeight.w600,
-                  color: AppColors.blackColor,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const StaffDashBoard()));
+                  },
+                  child: CustomText(
+                    inputText: "Whats happening?",
+                    textAlign: TextAlign.center,
+                    fontSize: 15,
+                    weight: FontWeight.w600,
+                    color: AppColors.blackColor,
+                  ),
                 ),
               ],
             ),

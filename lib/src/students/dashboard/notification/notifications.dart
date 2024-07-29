@@ -34,7 +34,7 @@ class NotificationsScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text("Weather Alert:",  style: TextStyle(color: AppColors.red, fontSize: 18)),
+                        Text("Weather Alert:",  style: TextStyle(color: AppColors.redColor, fontSize: 18)),
                       ],
                     ),
                     SizedBox(height: 10,),
