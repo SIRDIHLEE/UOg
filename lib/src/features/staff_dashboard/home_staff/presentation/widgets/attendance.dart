@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart'; // Import the intl package
 import 'package:uog/src/features/staff_dashboard/home_staff/presentation/widgets/students.dart';
 
 import '../../../../../common/custom_text.dart';
@@ -17,6 +18,11 @@ class Attendance extends StatefulWidget {
 class _AttendanceState extends State<Attendance> {
   @override
   Widget build(BuildContext context) {
+    // Get today's date
+    final DateTime now = DateTime.now();
+    // Format the date as "1st August 2024"
+    final String formattedDate = DateFormat('d MMMM yyyy').format(now);
+
     return Column(
       children: [
         const AttendanceTile(),
@@ -25,13 +31,13 @@ class _AttendanceState extends State<Attendance> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
-              inputText: '1st August 2024',
+              inputText: formattedDate, // Use the formatted date here
               textAlign: TextAlign.start,
               fontSize: 12,
               weight: FontWeight.w600,
               color: AppColors.blackColor.withOpacity(0.50),
             ),
-            Icon(Icons.keyboard_arrow_down_outlined,color:  AppColors.blackColor.withOpacity(0.50),)
+            Icon(Icons.keyboard_arrow_down_outlined, color: AppColors.blackColor.withOpacity(0.50),)
           ],
         ),
         SizedBox(height: 16.h,),
@@ -43,7 +49,7 @@ class _AttendanceState extends State<Attendance> {
             borderRadius: BorderRadius.circular(5.r),
           ),
           child: Padding(
-            padding:  EdgeInsets.only(left: 18.0.w,right: 18.w),
+            padding: EdgeInsets.only(left: 18.0.w, right: 18.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -80,9 +86,9 @@ class _AttendanceState extends State<Attendance> {
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              return  GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context,Routes.studentsScreen);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.studentsScreen);
                 },
                 child: Column(
                   children: [
@@ -113,7 +119,7 @@ class _AttendanceState extends State<Attendance> {
                           height: 21.h,
                           width: 70.w,
                           decoration: BoxDecoration(
-                            border:Border.all(
+                            border: Border.all(
                               color: AppColors.absentTColor,
                             ),
                             borderRadius: BorderRadius.circular(10.r),
@@ -133,7 +139,6 @@ class _AttendanceState extends State<Attendance> {
                                 weight: FontWeight.w500,
                                 color: AppColors.absentTColor,
                               ),
-
                             ],
                           ),
                         ),
@@ -146,9 +151,7 @@ class _AttendanceState extends State<Attendance> {
             },
           ),
         ),
-
       ],
     );
   }
 }
-
