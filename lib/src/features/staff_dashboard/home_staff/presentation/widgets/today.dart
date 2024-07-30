@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:uog/src/features/staff_dashboard/home_staff/presentation/widgets/service_tile.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../../common/custom_text.dart';
 import '../../../../../constant/colors.dart';
@@ -13,6 +18,43 @@ class Today extends StatefulWidget {
 }
 
 class _TodayState extends State<Today> {
+  String temperature = '...';
+  String date = '';
+  final String apiKey = dotenv.env['API_KEY'] ?? '';
+  // bool showToday = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchWeatherData();
+    fetchCurrentDate();
+  }
+
+  Future<void> fetchWeatherData() async {
+    final response = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=$apiKey'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        temperature = '${data['main']['temp'].toStringAsFixed(0)}\u2103';
+      });
+    } else {
+      setState(() {
+        temperature = 'Error';
+      });
+    }
+  }
+
+  void fetchCurrentDate() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('EEEE, d MMMM').format(now);
+    setState(() {
+      date = formattedDate;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -46,15 +88,15 @@ class _TodayState extends State<Today> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
-                                inputText: '16',
-                                fontSize: 72,
+                                inputText: temperature,
+                                fontSize: 45,
                                 weight: FontWeight.w600,
                                 color: Colors.white),
-                            CustomText(
-                                inputText: '\u2103',
-                                fontSize: 48,
-                                weight: FontWeight.w500,
-                                color: Colors.white),
+                            // CustomText(
+                            //     inputText: '\u2103',
+                            //     fontSize: 48,
+                            //     weight: FontWeight.w500,
+                            //     color: Colors.white),
                           ],
                         ),
                         SizedBox(
@@ -65,7 +107,7 @@ class _TodayState extends State<Today> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                  inputText: 'Monday, 03 July',
+                                  inputText: date,
                                   fontSize: 16,
                                   weight: FontWeight.w700,
                                   color: Colors.white),

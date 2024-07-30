@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
+import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 
 import 'module/module.dart';
 
@@ -67,9 +68,14 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: Row(
               children: [
-                Image.asset(
-                  "assets/images/noti.png", color: Colors.black,
-                  height: 25,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const StaffDashBoard()));
+                  },
+                  child: Image.asset(
+                    "assets/images/noti.png", color: Colors.black,
+                    height: 25,
+                  ),
                 ),
                 const SizedBox(width: 5,),
                 Image.asset(

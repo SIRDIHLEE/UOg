@@ -87,6 +87,7 @@ class _StudentsState extends State<Students> {
             title: 'Sign In',
             borderRadius: 10,
             onPressed: () {
+              // Navigator.pushReplacementNamed(context, Routes.dashboard);
               Navigator.pushReplacementNamed(context, Routes.dashboard);
               // if (_key.currentState!.validate()) {
               //   Navigator.pushReplacementNamed(context, Routes.dashboard);

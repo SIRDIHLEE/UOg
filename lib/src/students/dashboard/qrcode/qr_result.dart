@@ -12,6 +12,7 @@ class QRResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Extract the student ID No from the QR code
+    // print(code);
     RegExp regExp = RegExp(r"ID No: (\d+)");
     Match? match = regExp.firstMatch(code);
     String? studentId;
