@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,8 +20,56 @@ class Staff extends StatefulWidget {
 class _StaffState extends State<Staff> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _email = TextEditingController();
+  var _isSending = false;
+  var _error;
   final _passwordController = TextEditingController();
   bool _isObscured = true;
+
+
+  void _signIn() async {
+    setState(() {
+      _isSending = true;
+    });
+
+    try {
+      // Sign in with email and password
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _email.text,
+        password: _passwordController.text,
+      );
+
+      // Get the signed-in user
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Check if the email is 'kolawole2024@outlook.com'
+        if (_email.text == 'kolawole2024@outlook.com') {
+          // Show error message if the email is excluded
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Access denied for this email.')),
+          );
+        } else {
+          // Navigate to the staff dashboard if the email is allowed
+          Navigator.pushReplacementNamed(context, Routes.staffDashboard);
+        }
+      } else {
+        // Handle case where user is null
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not found')),
+        );
+      }
+    } catch (e) {
+      // Handle errors (e.g., invalid credentials)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
+      setState(() {
+        _isSending = false;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +78,18 @@ class _StaffState extends State<Staff> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: 19.h),
+          SizedBox(
+            height: 19.h,
+          ),
           CustomEmailInputField(
             inputController: _email,
             inputHintText: 'Enter your university email address',
             keyboardType: TextInputType.emailAddress,
             header: 'Email Address',
           ),
-          SizedBox(height: 8.h),
+          SizedBox(
+            height: 8.h,
+          ),
           CustomPasswordWithoutValInputField(
             isObscured: _isObscured,
             inputController: _passwordController,
@@ -55,26 +108,28 @@ class _StaffState extends State<Staff> {
             weight: FontWeight.w500,
             color: AppColors.blackColor,
           ),
-          SizedBox(height: 8.h),
+          SizedBox(
+            height: 8.h,
+          ),
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
-            onPressed: () {
-              if (_key.currentState!.validate()) {
-                // Add print statement for debugging
-                print('Navigating to staffDashboard');
-                Navigator.pushReplacementNamed(context, Routes.staffDashboard);
-              }
-            },
+            onPressed: _signIn,
           ),
-          SizedBox(height: 12.h),
+          SizedBox(
+            height: 12.h,
+          ),
           const OrText(),
-          SizedBox(height: 16.h),
+          SizedBox(
+            height: 16.h,
+          ),
           CustomizableButton(
             onPressed: () {},
             title: 'Continue as Guest',
           ),
-          SizedBox(height: 12.h),
+          SizedBox(
+            height: 12.h,
+          ),
           CustomizableButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, Routes.staffDashboard);
@@ -89,7 +144,9 @@ class _StaffState extends State<Staff> {
                   weight: FontWeight.w500,
                   color: AppColors.blackColor,
                 ),
-                SizedBox(width: 23.w),
+                SizedBox(
+                  width: 23.w,
+                ),
                 SvgPicture.asset('assets/images/svg_images/outlook.svg'),
               ],
             ),

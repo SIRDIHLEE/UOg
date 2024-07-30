@@ -21,7 +21,7 @@ class _SignInState extends State<SignIn> {
 
   int current = 0;
 
-  final List<Widget> tabs =[
+  final List<Widget> tabs = [
     const Students(),
     const Staff()
   ];

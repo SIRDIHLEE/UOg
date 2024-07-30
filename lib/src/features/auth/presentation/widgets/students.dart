@@ -36,8 +36,51 @@ class _StudentsState extends State<Students> {
       await FirebaseAuth.instance.signInWithProvider(provider);
     } catch (e) {
       setState(() {
-        _error = "An error occured,";
+        _error = "An error occurred";
 
+        _isSending = false;
+      });
+    }
+  }
+
+  void _signIn() async {
+    setState(() {
+      _isSending = true;
+    });
+
+    try {
+      // Sign in with email and password (adjust as needed for your use case)
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _email.text,
+        password: _passwordController.text,
+      );
+
+      // Get the signed-in user
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Check if the email is 'elvis2025@outlook.com'
+        if (_email.text == 'elvis2025@outlook.com') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Access denied for this tab')),
+          );
+        } else {
+          // Navigate to the dashboard if the user is not 'elvis2025@outlook.com'
+          Navigator.pushReplacementNamed(context, Routes.dashboard);
+        }
+      } else {
+        // Handle case where user is null
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not found')),
+        );
+      }
+    } catch (e) {
+      // Handle errors (e.g., invalid credentials)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
+      setState(() {
         _isSending = false;
       });
     }
@@ -86,15 +129,7 @@ class _StudentsState extends State<Students> {
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
-            onPressed: () {
-              // Navigator.pushReplacementNamed(context, Routes.dashboard);
-              Navigator.pushReplacementNamed(context, Routes.dashboard);
-              // if (_key.currentState!.validate()) {
-              //   Navigator.pushReplacementNamed(context, Routes.dashboard);
-              // }
-
-              //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Routes.Dashboard))
-            },
+            onPressed: _signIn,
           ),
           SizedBox(
             height: 12.h,
@@ -111,34 +146,32 @@ class _StudentsState extends State<Students> {
             height: 12.h,
           ),
           CustomizableButton(
-            onPressed: () {
-              _auth();
-            },
+            onPressed: _auth,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _isSending
                     ? Row(children: [
-                        const SizedBox(
-                            height: 5,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                            )),
-                        CustomText(
-                          inputText: "Loading",
-                          textAlign: TextAlign.center,
-                          fontSize: 14,
-                          weight: FontWeight.w500,
-                          color: AppColors.blackColor,
-                        ),
-                      ])
+                  const SizedBox(
+                      height: 5,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                  CustomText(
+                    inputText: "Loading",
+                    textAlign: TextAlign.center,
+                    fontSize: 14,
+                    weight: FontWeight.w500,
+                    color: AppColors.blackColor,
+                  ),
+                ])
                     : CustomText(
-                        inputText: "Login with Outlook",
-                        textAlign: TextAlign.center,
-                        fontSize: 14,
-                        weight: FontWeight.w500,
-                        color: AppColors.blackColor,
-                      ),
+                  inputText: "Login with Outlook",
+                  textAlign: TextAlign.center,
+                  fontSize: 14,
+                  weight: FontWeight.w500,
+                  color: AppColors.blackColor,
+                ),
                 SizedBox(
                   width: 23.w,
                 ),
