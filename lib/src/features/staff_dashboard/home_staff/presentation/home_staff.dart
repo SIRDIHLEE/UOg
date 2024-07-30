@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
@@ -21,11 +23,30 @@ class _HomeStaffState extends State<HomeStaff> {
   ];
 
   int current = 0;
+  String userName = '...'; // Initialize with default value
 
-  final List<Widget> tabs =[
+  final List<Widget> tabs = [
     const Today(),
     const Attendance(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName(); // Fetch the user name
+  }
+
+  Future<void> fetchUserName() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid; // Get the current user ID
+    if (userId != null) {
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        setState(() {
+          userName = userDoc.data()?['name'] ?? 'New user';
+        });
+      }
+    }
+  }
 
   Widget _buildTabBar() {
     return Column(
@@ -52,13 +73,17 @@ class _HomeStaffState extends State<HomeStaff> {
                           textAlign: TextAlign.center,
                           fontSize: 16,
                           weight: FontWeight.w600,
-                          color: current == index ?
-                          AppColors.blackColor: AppColors.textColor2.withOpacity(0.90) ,
+                          color: current == index
+                              ? AppColors.blackColor
+                              : AppColors.textColor2.withOpacity(0.90),
                         ),
                       ),
-                      Container(height: 2.h,width: 50.w,
-                       color: current == index ?
-                       AppColors.blackColor : AppColors.scaffoldBackground,
+                      Container(
+                        height: 2.h,
+                        width: 50.w,
+                        color: current == index
+                            ? AppColors.blackColor
+                            : AppColors.scaffoldBackground,
                       ),
                     ],
                   ),
@@ -67,34 +92,40 @@ class _HomeStaffState extends State<HomeStaff> {
             },
           ),
         ),
-        SizedBox(height: 10.h,),
-
+        SizedBox(height: 10.h),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding:  EdgeInsets.fromLTRB(18.w,48.h,18.w,0),
+        padding: EdgeInsets.fromLTRB(18.w, 48.h, 18.w, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                CustomText(inputText:'Hi, Rowen' ,
-                    fontSize: 16,
-                    weight: FontWeight.w600,
-                    color: Colors.black),
+                CustomText(
+                  inputText: 'Hi, $userName', // Use the fetched name here
+                  fontSize: 16,
+                  weight: FontWeight.w600,
+                  color: Colors.black,
+                ),
                 const Spacer(),
-                Icon(Iconsax.notification,size: 20.sp,),
-                SizedBox(width: 7.w,),
-                const CircleAvatar(backgroundColor: Colors.grey,)
+                Icon(
+                  Iconsax.notification,
+                  size: 20.sp,
+                ),
+                SizedBox(width: 7.w),
+                const CircleAvatar(
+                  backgroundColor: Colors.grey,
+                )
               ],
             ),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             _buildTabBar(),
             Expanded(child: tabs[current]),
           ],

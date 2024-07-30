@@ -16,7 +16,6 @@ import '../../../../common/alert_dialog.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
 
-
 class SettingsStaff extends StatefulWidget {
   const SettingsStaff({super.key});
 
@@ -32,6 +31,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
   bool switchValue1 = false;
   bool _isObscured = true;
   String? _profilePicUrl;
+  String? _tempProfilePicUrl;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
             _fullName.text = doc['name'] ?? '';
             _phone.text = doc['phone_num'] ?? '';
             _email.text = doc['email'] ?? '';
-            _profilePicUrl = doc['profilePicture']; // Handle profile picture URL
+            _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
           });
         }
       } catch (e) {
@@ -77,8 +77,8 @@ class _SettingsStaffState extends State<SettingsStaff> {
           'name': _fullName.text,
           'phone_num': _phone.text,
           'email': _email.text,
-          'profilePicture': _profilePicUrl, // Save profile picture URL
-        }, SetOptions(merge: true)); // Use merge to update if exists, create if not
+          'profilePicture': _profilePicUrl,
+        }, SetOptions(merge: true));
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile updated successfully')),
         );
@@ -94,8 +94,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
     }
   }
 
-
-  void _onLogout(){
+  void _onLogout() {
     FirebaseAuth.instance.signOut();
   }
 
@@ -107,41 +106,30 @@ class _SettingsStaffState extends State<SettingsStaff> {
 
       if (image != null) {
         File file = File(image.path);
-        String fileName = DateTime.now().toString() + '.jpg';
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+        Reference storageRef = FirebaseStorage.instance.ref().child('profile_pics/$fileName');
 
         try {
-          Reference storageRef = FirebaseStorage.instance.ref().child('profile_pics/$fileName');
           UploadTask uploadTask = storageRef.putFile(file);
 
-          // Add a listener to track progress and handle errors
           uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-            // You can add progress logging here if needed
-          }).onError((error) {
-            print('Upload error: $error');
-            throw error; // Re-throw the error to handle it in the catch block
+            print('Upload is ${snapshot.bytesTransferred / snapshot.totalBytes * 100}% complete');
           });
 
-          TaskSnapshot taskSnapshot = await uploadTask;
+          TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
           String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+          print('Download URL: $downloadUrl');
 
-          User? user = FirebaseAuth.instance.currentUser;
-          if (user != null) {
-            final userCollection = FirebaseFirestore.instance.collection('users');
-            await userCollection.doc(user.uid).set({
-              'profilePicture': downloadUrl,
-            }, SetOptions(merge: true));
+          setState(() {
+            _tempProfilePicUrl = downloadUrl;
+            _profilePicUrl = downloadUrl;
+          });
 
-            setState(() {
-              _profilePicUrl = downloadUrl;
-            });
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Profile picture updated successfully')),
-            );
-          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Profile picture ready to be saved')),
+          );
         } catch (e) {
-          // Enhanced error handling
-          print('Error updating profile picture: $e');
+          print('Error during upload: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error updating profile picture: $e')),
           );
@@ -180,7 +168,10 @@ class _SettingsStaffState extends State<SettingsStaff> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.arrow_back_outlined),
+                      IconButton(
+                        icon: Icon(Icons.arrow_back_outlined),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
                       SizedBox(width: 91.w),
                       CustomText(
                         inputText: 'Settings',
@@ -193,7 +184,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
                   SizedBox(height: 18.h),
                   SettingsCard(
                     profilePicUrl: _profilePicUrl,
-                    onProfilePicTap: _updateProfilePic, // Pass the callback
+                    onProfilePicTap: _updateProfilePic,
                   ),
                   SizedBox(height: 27.h),
                   CustomText(
@@ -282,7 +273,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
                     },
                   ),
                   SizedBox(height: 20.h),
-                  SettingsButtons(onSave: _saveChanges, onLogout: _onLogout), // Pass the save function
+                  SettingsButtons(onSave: _saveChanges, onLogout: _onLogout),
                 ],
               ),
             );
@@ -293,24 +284,21 @@ class _SettingsStaffState extends State<SettingsStaff> {
   }
 }
 
-
-
-
 class SettingsCard extends StatelessWidget {
   final String? profilePicUrl;
-  final VoidCallback onProfilePicTap; // Callback for image tap
+  final VoidCallback onProfilePicTap;
 
   const SettingsCard({
     super.key,
     this.profilePicUrl,
-    required this.onProfilePicTap, // Include it in the constructor
+    required this.onProfilePicTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 96.h,
-      width: double.maxFinite,
+      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: AppColors.settingsBColor,
@@ -321,16 +309,37 @@ class SettingsCard extends StatelessWidget {
           Stack(
             children: [
               GestureDetector(
-                onTap: onProfilePicTap, // Trigger the callback on tap
-                child: profilePicUrl != null
-                    ? Image.network(profilePicUrl!, height: 80.h, width: 80.w, fit: BoxFit.cover)
-                    : Image.asset('assets/images/Ellipse 255.png', height: 80.h, width: 80.w, fit: BoxFit.cover),
+                onTap: onProfilePicTap,
+                child: profilePicUrl != null && profilePicUrl!.isNotEmpty
+                    ? Image.network(
+                  profilePicUrl!,
+                  height: 80.h,
+                  width: 80.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                      child: Image.asset(
+                        'assets/images/Ellipse 255.png',
+                        height: 80.h,
+                        width: 80.w,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                )
+                    : Image.asset(
+                  'assets/images/Ellipse 255.png',
+                  height: 80.h,
+                  width: 80.w,
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
                 bottom: 8.h,
                 right: 8.w,
                 child: GestureDetector(
-                  onTap: onProfilePicTap, // Trigger the callback on tap
+                  onTap: onProfilePicTap,
                   child: Icon(
                     Icons.camera_alt,
                     color: Colors.white,
@@ -364,5 +373,3 @@ class SettingsCard extends StatelessWidget {
     );
   }
 }
-
-

@@ -55,6 +55,7 @@ dependencies:
   firebase_storage: ^12.1.1
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
+  cached_network_image: ^3.3.1
 
 
 dev_dependencies:
@@ -87,6 +88,7 @@ flutter:
   assets:
     - assets/images/
     - .env
+    - assets/images/ugo_profile.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -17,28 +17,30 @@ class Students extends StatefulWidget {
 }
 
 class _StudentsState extends State<Students> {
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _passwordController = TextEditingController();
-  var _isSending = false;
   bool _isObscured = true;
+  var _isSending = false;
   var _error;
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
-  void _auth() async {
+  void _signIn() async {
     setState(() {
       _isSending = true;
     });
 
     try {
-      final provider = OAuthProvider("microsoft.com");
-      provider.setCustomParameters({"tenant": "8faf8922-85dc-4d3c-a024-289010076a45"});
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithProvider(provider);
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _email.text,
+        password: _passwordController.text,
+      );
+
       final User? user = userCredential.user;
 
       if (user != null) {
         if (_email.text == 'elvis2025@outlook.com') {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Access denied for this tab')),
+            const SnackBar(content: Text('Access denied for this email.')),
           );
         } else {
           Navigator.pushReplacementNamed(context, Routes.dashboard);
@@ -96,7 +98,7 @@ class _StudentsState extends State<Students> {
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
-            onPressed: _auth,
+            onPressed: _signIn,
           ),
           SizedBox(height: 12.h),
           const OrText(),
@@ -107,22 +109,13 @@ class _StudentsState extends State<Students> {
           ),
           SizedBox(height: 12.h),
           CustomizableButton(
-            onPressed: _auth,
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, Routes.dashboard);
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _isSending
-                    ? Row(children: [
-                  const SizedBox(height: 5, child: CircularProgressIndicator(color: Colors.black)),
-                  CustomText(
-                    inputText: "Loading",
-                    textAlign: TextAlign.center,
-                    fontSize: 14,
-                    weight: FontWeight.w500,
-                    color: AppColors.blackColor,
-                  ),
-                ])
-                    : CustomText(
+                CustomText(
                   inputText: "Login with Outlook",
                   textAlign: TextAlign.center,
                   fontSize: 14,

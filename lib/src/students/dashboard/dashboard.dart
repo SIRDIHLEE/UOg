@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -5,6 +7,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
+import 'package:uog/src/students/dashboard/student_profile/presentation/student_profile.dart';
 
 import 'module/module.dart';
 
@@ -18,6 +21,7 @@ class StudentDashboardScreen extends StatefulWidget {
 class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   String temperature = '...';
   String date = '';
+  String userName = '...'; // Initialize with default value
   final String apiKey = dotenv.env['API_KEY'] ?? '';
   bool showToday = true;
 
@@ -26,6 +30,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     super.initState();
     fetchWeatherData();
     fetchCurrentDate();
+    // No need to fetch user name here, we'll use StreamBuilder instead
   }
 
   Future<void> fetchWeatherData() async {
@@ -56,11 +61,27 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
-          child: Text(
-            "Hi, Joe Mike",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
+          child: StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                final userData = snapshot.data?.data() as Map<String, dynamic>?;
+                final name = userData?['name'] ?? 'New User';
+                return Text(
+                  "Hi, $name",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                );
+              }
+              return Text(
+                "Hi, ...",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              );
+            },
           ),
         ),
         actions: [
@@ -70,17 +91,31 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const StaffDashBoard()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const StaffDashBoard()));
                   },
                   child: Image.asset(
-                    "assets/images/noti.png", color: Colors.black,
+                    "assets/images/noti.png",
+                    color: Colors.black,
                     height: 25,
                   ),
                 ),
                 const SizedBox(width: 5,),
-                Image.asset(
-                  "assets/images/stuimg.png",
-                  height: 40,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const StudentProfile(),
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                    "assets/images/stuimg.png",
+                    height: 40,
+                  ),
                 )
               ],
             ),
@@ -107,9 +142,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
+                const SizedBox(width: 15),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -126,9 +159,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Expanded(
               child: showToday ? buildTodayContent() : buildModulesContent(),
             ),
@@ -180,9 +211,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                width: 30,
-              ),
+              const SizedBox(width: 30),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
                 child: Column(
@@ -197,8 +226,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     const Expanded(
                         child: Text(
                           "⛅ Light rain|Remember \nto carry a light jacket",
-                          style:
-                          TextStyle(color: AppColors.textColor, fontSize: 11),
+                          style: TextStyle(color: AppColors.textColor, fontSize: 11),
                         ))
                   ],
                 ),
@@ -206,15 +234,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         Container(
           child: Image.asset("assets/images/banner.png"),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         Container(
             height: 350,
             decoration: BoxDecoration(
@@ -230,9 +254,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -242,21 +264,15 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                         Image.asset(
                           "assets/images/dash1.png",
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        SizedBox(width: 8),
                         Image.asset("assets/images/dash2.png"),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        SizedBox(width: 8),
                         Image.asset("assets/images/dash4.png"),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 const Text(
                   "Social & Extracuricular",
                   style: TextStyle(
@@ -273,15 +289,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                           Image.asset(
                             "assets/images/cam2.png",
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
+                          SizedBox(width: 8),
                           Image.asset(
                             "assets/images/cam1.png",
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
+                          SizedBox(width: 8),
                           Image.asset(
                             "assets/images/camp4.png",
                           ),
@@ -312,9 +324,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             ),
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
               color: AppColors.primaryColor,
@@ -338,3 +348,5 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     return const ModuleOverviewScreen();
   }
 }
+
+

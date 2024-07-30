@@ -9,11 +9,11 @@ import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/wid
 import '../../../../../common/alert_dialog.dart';
 import '../../../../../common/custom_text.dart';
 
-class SettingsButtons extends StatelessWidget {
+class StudentProfileButtons extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onLogout;
 
-  const SettingsButtons({
+  const StudentProfileButtons({
     super.key,
     required this.onSave,
     required this.onLogout,
