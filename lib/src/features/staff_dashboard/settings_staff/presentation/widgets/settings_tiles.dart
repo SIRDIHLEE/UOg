@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uog/src/common/custom_button.dart';
+import 'package:uog/src/common/custom_button.dart'; // Ensure this is implemented
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/log_out.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/password_changed.dart';
@@ -9,10 +9,12 @@ import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/wid
 import '../../../../../common/alert_dialog.dart';
 import '../../../../../common/custom_text.dart';
 
-
 class SettingsButtons extends StatelessWidget {
+  final VoidCallback onSave; // Add a callback for saving changes
+
   const SettingsButtons({
     super.key,
+    required this.onSave, // Initialize the callback
   });
 
   @override
@@ -21,14 +23,13 @@ class SettingsButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             CustomAlertDialog.showAlertDialog(
               context: context,
               height: 155.h,
               isDissmisable: false,
-              child:  const LogOut(),
+              child: const LogOut(),
             );
-
           },
           child: Container(
             height: 47.h,
@@ -38,23 +39,17 @@ class SettingsButtons extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
-              child: CustomText(inputText:'Log out' ,
-                  fontSize: 16,
-                  weight: FontWeight.w400,
-                  color: AppColors.textField),
+              child: CustomText(
+                inputText: 'Log out',
+                fontSize: 16,
+                weight: FontWeight.w400,
+                color: AppColors.textField,
+              ),
             ),
           ),
         ),
         GestureDetector(
-          onTap: (){
-            CustomAlertDialog.showAlertDialog(
-              context: context,
-              height: 136.h,
-              isDissmisable: true,
-              child:  const PasswordChanged(),
-            );
-
-          },
+          onTap: onSave, // Use the save callback
           child: Container(
             height: 47.h,
             width: 155.w,
@@ -63,10 +58,12 @@ class SettingsButtons extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
-              child: CustomText(inputText:'Save Changes' ,
-                  fontSize: 16,
-                  weight: FontWeight.w400,
-                  color: AppColors.scaffoldBackground),
+              child: CustomText(
+                inputText: 'Save Changes',
+                fontSize: 16,
+                weight: FontWeight.w400,
+                color: AppColors.scaffoldBackground,
+              ),
             ),
           ),
         ),
