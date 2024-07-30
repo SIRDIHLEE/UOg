@@ -32,6 +32,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
   bool _isObscured = true;
   String? _profilePicUrl;
   String? _tempProfilePicUrl;
+  String _displayName = 'New User'; // Default name
 
   @override
   void initState() {
@@ -51,10 +52,11 @@ class _SettingsStaffState extends State<SettingsStaff> {
 
         if (doc.exists) {
           setState(() {
-            _fullName.text = doc['name'] ?? '';
+            _fullName.text = doc['name'] ?? 'New User';
             _phone.text = doc['phone_num'] ?? '';
             _email.text = doc['email'] ?? '';
             _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
+            _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
           });
         }
       } catch (e) {
@@ -79,6 +81,12 @@ class _SettingsStaffState extends State<SettingsStaff> {
           'email': _email.text,
           'profilePicture': _profilePicUrl,
         }, SetOptions(merge: true));
+
+        // Update the local state to reflect the changes
+        setState(() {
+          _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile updated successfully')),
         );
@@ -168,10 +176,10 @@ class _SettingsStaffState extends State<SettingsStaff> {
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back_outlined),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.arrow_back_outlined),
+                      //   onPressed: () => Navigator.of(context).pop(),
+                      // ),
                       SizedBox(width: 91.w),
                       CustomText(
                         inputText: 'Settings',
@@ -185,6 +193,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
                   SettingsCard(
                     profilePicUrl: _profilePicUrl,
                     onProfilePicTap: _updateProfilePic,
+                    displayName: _displayName,
                   ),
                   SizedBox(height: 27.h),
                   CustomText(
@@ -286,11 +295,13 @@ class _SettingsStaffState extends State<SettingsStaff> {
 
 class SettingsCard extends StatelessWidget {
   final String? profilePicUrl;
+  final String displayName;
   final VoidCallback onProfilePicTap;
 
   const SettingsCard({
     super.key,
     this.profilePicUrl,
+    required this.displayName,
     required this.onProfilePicTap,
   });
 
@@ -355,7 +366,7 @@ class SettingsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomText(
-                inputText: 'Rowen Wright',
+                inputText: displayName,
                 fontSize: 20,
                 weight: FontWeight.w600,
                 color: Colors.black,
