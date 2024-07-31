@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -22,6 +23,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   String temperature = '...';
   String date = '';
   String userName = '...'; // Initialize with default value
+  String profilePictureUrl = '';
   final String apiKey = dotenv.env['API_KEY'] ?? '';
   bool showToday = true;
 
@@ -30,7 +32,21 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     super.initState();
     fetchWeatherData();
     fetchCurrentDate();
+    fetchUserData();
     // No need to fetch user name here, we'll use StreamBuilder instead
+  }
+
+  Future<void> fetchUserData() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid; // Get the current user ID
+    if (userId != null) {
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        setState(() {
+          userName = userDoc.data()?['name'] ?? 'New user';
+          profilePictureUrl = userDoc.data()?['profilePicture'] ?? ''; // Fetch the profile picture URL
+        });
+      }
+    }
   }
 
   Future<void> fetchWeatherData() async {
@@ -57,10 +73,13 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
           child: StreamBuilder<DocumentSnapshot>(
@@ -112,9 +131,14 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       ),
                     );
                   },
-                  child: Image.asset(
-                    "assets/images/stuimg.png",
-                    height: 40,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: profilePictureUrl.isNotEmpty
+                        ? NetworkImage(profilePictureUrl)
+                        : null,
+                    child: profilePictureUrl.isEmpty
+                        ? Icon(Icons.person, size: 20.sp, color: Colors.white)
+                        : null,
                   ),
                 )
               ],

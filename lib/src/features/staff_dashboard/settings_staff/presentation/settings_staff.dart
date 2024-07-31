@@ -33,6 +33,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
   String? _profilePicUrl;
   String? _tempProfilePicUrl;
   String _displayName = 'New User'; // Default name
+  String _schoolId = '000011111'; // Default school ID
 
   @override
   void initState() {
@@ -57,6 +58,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
             _email.text = doc['email'] ?? '';
             _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
             _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
+            _schoolId = doc['SCHOOLID'] ?? '000011111';
           });
         }
       } catch (e) {
@@ -115,18 +117,18 @@ class _SettingsStaffState extends State<SettingsStaff> {
       if (image != null) {
         File file = File(image.path);
         String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-        Reference storageRef = FirebaseStorage.instance.ref().child('profile_pics/$fileName');
+        Reference storageRef = FirebaseStorage.instance.ref().child('profilePicture/$fileName');
 
         try {
           UploadTask uploadTask = storageRef.putFile(file);
 
           uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-            print('Upload is ${snapshot.bytesTransferred / snapshot.totalBytes * 100}% complete');
+            // print('Upload is ${snapshot.bytesTransferred / snapshot.totalBytes * 100}% complete');
           });
 
           TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
           String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          print('Download URL: $downloadUrl');
+          // print('Download URL: $downloadUrl');
 
           setState(() {
             _tempProfilePicUrl = downloadUrl;
@@ -137,7 +139,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
             SnackBar(content: Text('Profile picture ready to be saved')),
           );
         } catch (e) {
-          print('Error during upload: $e');
+          // print('Error during upload: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error updating profile picture: $e')),
           );
@@ -176,10 +178,6 @@ class _SettingsStaffState extends State<SettingsStaff> {
                 children: [
                   Row(
                     children: [
-                      // IconButton(
-                      //   icon: Icon(Icons.arrow_back_outlined),
-                      //   onPressed: () => Navigator.of(context).pop(),
-                      // ),
                       SizedBox(width: 91.w),
                       CustomText(
                         inputText: 'Settings',
@@ -194,6 +192,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
                     profilePicUrl: _profilePicUrl,
                     onProfilePicTap: _updateProfilePic,
                     displayName: _displayName,
+                    schoolId: _schoolId,
                   ),
                   SizedBox(height: 27.h),
                   CustomText(
@@ -296,12 +295,14 @@ class _SettingsStaffState extends State<SettingsStaff> {
 class SettingsCard extends StatelessWidget {
   final String? profilePicUrl;
   final String displayName;
+  final String schoolId;
   final VoidCallback onProfilePicTap;
 
   const SettingsCard({
     super.key,
     this.profilePicUrl,
     required this.displayName,
+    required this.schoolId,
     required this.onProfilePicTap,
   });
 
@@ -322,22 +323,25 @@ class SettingsCard extends StatelessWidget {
               GestureDetector(
                 onTap: onProfilePicTap,
                 child: profilePicUrl != null && profilePicUrl!.isNotEmpty
-                    ? Image.network(
-                  profilePicUrl!,
-                  height: 80.h,
-                  width: 80.w,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: Image.asset(
-                        'assets/images/Ellipse 255.png',
-                        height: 80.h,
-                        width: 80.w,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
+                    ? ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                  child: Image.network(
+                    profilePicUrl!,
+                    height: 80.h,
+                    width: 80.w,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(50)),
+                        child: Image.asset(
+                          'assets/images/Ellipse 255.png',
+                          height: 80.h,
+                          width: 80.w,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
                 )
                     : Image.asset(
                   'assets/images/Ellipse 255.png',
@@ -372,7 +376,7 @@ class SettingsCard extends StatelessWidget {
                 color: Colors.black,
               ),
               CustomText(
-                inputText: 'Staff ID: 12345',
+                inputText: 'Staff ID: $schoolId',
                 fontSize: 16,
                 weight: FontWeight.w400,
                 color: Colors.black,

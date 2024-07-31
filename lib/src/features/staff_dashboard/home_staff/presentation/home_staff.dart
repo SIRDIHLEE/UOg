@@ -17,13 +17,15 @@ class HomeStaff extends StatefulWidget {
 }
 
 class _HomeStaffState extends State<HomeStaff> {
+  String userName = '...'; // Initialize with default value
+  String profilePictureUrl = ''; // Initialize with default value
+
   List<String> secondTabBar = <String>[
     'Today',
     'Attendance',
   ];
 
   int current = 0;
-  String userName = '...'; // Initialize with default value
 
   final List<Widget> tabs = [
     const Today(),
@@ -33,16 +35,17 @@ class _HomeStaffState extends State<HomeStaff> {
   @override
   void initState() {
     super.initState();
-    fetchUserName(); // Fetch the user name
+    fetchUserData(); // Fetch the user data
   }
 
-  Future<void> fetchUserName() async {
+  Future<void> fetchUserData() async {
     final userId = FirebaseAuth.instance.currentUser?.uid; // Get the current user ID
     if (userId != null) {
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
       if (userDoc.exists) {
         setState(() {
           userName = userDoc.data()?['name'] ?? 'New user';
+          profilePictureUrl = userDoc.data()?['profilePicture'] ?? ''; // Fetch the profile picture URL
         });
       }
     }
@@ -120,8 +123,14 @@ class _HomeStaffState extends State<HomeStaff> {
                   size: 20.sp,
                 ),
                 SizedBox(width: 7.w),
-                const CircleAvatar(
+                CircleAvatar(
                   backgroundColor: Colors.grey,
+                  backgroundImage: profilePictureUrl.isNotEmpty
+                      ? NetworkImage(profilePictureUrl)
+                      : null,
+                  child: profilePictureUrl.isEmpty
+                      ? Icon(Icons.person, size: 20.sp, color: Colors.white)
+                      : null,
                 )
               ],
             ),

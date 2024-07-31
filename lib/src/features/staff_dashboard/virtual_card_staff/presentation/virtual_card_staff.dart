@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../constant/colors.dart';
 
-
 class VirtualCardStaff extends StatefulWidget {
   const VirtualCardStaff({super.key});
 
@@ -41,6 +40,8 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
           } else {
             final userData = snapshot.data!.data()!;
             final name = userData['name'] ?? 'New user. Please update your profile';
+            final profilePicture = userData['profilePicture'] ?? '';
+            final schoolId = userData['SCHOOLID'] ?? '000001111';
             return Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -53,12 +54,25 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
               child: Column(
                 children: [
                   SizedBox(height: 135.h),
-                  Image.asset(
-                    'assets/images/Ellipse 255.png',
-                    height: 120.h,
-                    width: 120.w,
-                    fit: BoxFit.scaleDown,
-                  ),
+                  profilePicture.isNotEmpty
+                      ? ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        child: Image.network(
+                                            profilePicture,
+                                            height: 120.h,
+                                            width: 120.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                      )
+                      : ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        child: Image.asset(
+                                            'assets/images/Ellipse 255.png',
+                                            height: 120.h,
+                                            width: 120.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                      ),
                   SizedBox(height: 85.h),
                   CustomText(
                     inputText: name,
@@ -77,7 +91,7 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
                   ),
                   SizedBox(height: 28.h),
                   CustomText(
-                    inputText: 'ID No: 0123456789',
+                    inputText: 'ID No: $schoolId',
                     textAlign: TextAlign.start,
                     fontSize: 15,
                     weight: FontWeight.w500,
@@ -118,4 +132,3 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
     );
   }
 }
-

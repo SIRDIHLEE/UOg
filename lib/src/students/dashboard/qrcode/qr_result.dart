@@ -1,37 +1,146 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:uog/src/students/dashboard/qrcode/qrcode.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uog/src/constant/colors.dart';
 
-class QRResult extends StatelessWidget {
-  final String code;
+class QRResult extends StatefulWidget {
   final Function() closeScreen;
 
-  const QRResult({super.key, required this.code, required this.closeScreen, String? studentId});
+  const QRResult({super.key, required this.closeScreen});
+
+  @override
+  _QRResultState createState() => _QRResultState();
+}
+
+class _QRResultState extends State<QRResult> {
+  bool _isUpdating = false;
+  bool _isUpdatedToday = false;
+  String? _studentName;
+  String? _studentId;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchStudentDetails();
+    _checkIfUpdatedToday();
+  }
+
+  Future<void> _fetchStudentDetails() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final userCollection = _firestore.collection('users');
+      final docRef = userCollection.doc(user.uid);
+
+      try {
+        DocumentSnapshot doc = await docRef.get();
+
+        if (doc.exists) {
+          setState(() {
+            _studentName = doc['name'] as String?;
+            _studentId = doc['SCHOOLID'] as String?;
+          });
+        } else {
+          print("No such document");
+        }
+      } catch (e) {
+        print("Error fetching student details: $e");
+      }
+    }
+  }
+
+  Future<void> _checkIfUpdatedToday() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && _studentId != null) {
+      final currentDate = DateTime.now().toIso8601String().split('T')[0]; // YYYY-MM-DD
+      final attendanceRef = _firestore
+          .collection('attendance')
+          .doc(currentDate)
+          .collection('students')
+          .doc(_studentId!);
+
+      try {
+        DocumentSnapshot doc = await attendanceRef.get();
+
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          final status = data['status'];
+          setState(() {
+            _isUpdatedToday = status == 'Present';
+          });
+        }
+      } catch (e) {
+        print("Error checking attendance: $e");
+      }
+    }
+  }
+
+  Future<bool> _updateAttendance(String studentId, String name) async {
+    try {
+      final currentDate = DateTime.now().toIso8601String().split('T')[0]; // YYYY-MM-DD
+      final attendanceRef = _firestore
+          .collection('attendance')
+          .doc(currentDate)
+          .collection('students')
+          .doc(studentId);
+
+      await attendanceRef.set({
+        'name': name,
+        'id': studentId,
+        'timestamp': FieldValue.serverTimestamp(),
+        'status': 'Present', // Add status here
+      }, SetOptions(merge: true));
+
+      return true;
+    } catch (e) {
+      print("Error updating attendance: $e");
+      return false;
+    }
+  }
+
+  Future<void> _handleUpdateAttendance() async {
+    if (_studentId == null || _studentName == null) {
+      print("Student ID or Name is null");
+      return;
+    }
+
+    final success = await _updateAttendance(_studentId!, _studentName!);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(success ? "Success" : "Failure"),
+          content: Text(success
+              ? "Attendance has been updated successfully."
+              : "There was an error updating the attendance. Please try again."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Update the flag after successful update
+    setState(() {
+      _isUpdatedToday = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Extract the student ID No from the QR code
-    // print(code);
-    RegExp regExp = RegExp(r"ID No: (\d+)");
-    Match? match = regExp.firstMatch(code);
-    String? studentId;
-    if (match != null && match.groupCount > 0) {
-      studentId = match.group(1);
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return const QrCodeScreen();
-                },
-              ),
-            );
+            Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
           color: Colors.black,
@@ -43,221 +152,48 @@ class QRResult extends StatelessWidget {
               fontWeight: FontWeight.bold, color: AppColors.primaryColor),
         ),
       ),
-      body: SingleChildScrollView(
-        reverse: false,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Center(
-            child: Column(
-              children: [
-                const Icon(Icons.check_circle_outline, size: 300, color: Colors.green,),
-                const Text(
-                  "Attendance updated successfully",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const Text(
-                //   "For Student ID:",
-                //   style: TextStyle(
-                //       color: Colors.black,
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.bold),
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // Text(
-                //   studentId ?? "Unknown Student ID", // Display the student ID
-                //   textAlign: TextAlign.center,
-                //   style: const TextStyle(
-                //     color: Colors.black87,
-                //     fontSize: 20,
-                //   ),
-                // ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.check_circle_outline, size: 300, color: Colors.green,),
+            const Text(
+              "Attendance updated successfully",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-          ),
+            if (_studentName != null && _studentId != null)
+              Column(
+                children: [
+                  Text("Student Name: $_studentName"),
+                  Text("Student ID: $_studentId"),
+                ],
+              ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isUpdating || _isUpdatedToday
+                  ? null
+                  : () async {
+                setState(() {
+                  _isUpdating = true;
+                });
+                await _handleUpdateAttendance();
+                setState(() {
+                  _isUpdating = false;
+                });
+              },
+              child: _isUpdating
+                  ? CircularProgressIndicator()
+                  : Text(_isUpdatedToday ? "Updated Today" : "Update Attendance"),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
-// import 'package:url_launcher/url_launcher.dart'; // Import for URL launcher
-// import 'package:uog/src/students/dashboard/qrcode/qrcode.dart';
-// import 'package:uog/src/constant/colors.dart';
-//
-// class QRResult extends StatelessWidget {
-//   final String code;
-//   final Function() closeScreen;
-//
-//   const QRResult({super.key, required this.code, required this.closeScreen});
-//
-//   // Function to launch URL
-//   Future<void> _launchURL(BuildContext context) async {
-//     String url = code.trim();
-//
-//     // More robust URL validation using regular expression (adjust pattern as needed)
-//     final urlRegex = RegExp(r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&//=]*)$');
-//     if (!urlRegex.hasMatch(url)) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text('Invalid URL format'),
-//           duration: Duration(seconds: 2),
-//         ),
-//       );
-//       return;
-//     }
-//
-//     try {
-//       final uri = Uri.parse(url);
-//       if (await canLaunchUrl(uri)) {
-//         await launchUrl(uri);
-//       } else {
-//         throw 'Could not launch $url';
-//       }
-//     } catch (e) {
-//       // For debugging
-//           ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(
-//           content: Text('Error launching URL: $e'),
-//           duration: const Duration(seconds: 2),
-//         ),
-//       );
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: IconButton(
-//           onPressed: () {
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context) {
-//                   return const QrCodeScreen();
-//                 },
-//               ),
-//             );
-//           },
-//           icon: const Icon(Icons.arrow_back),
-//           color: Colors.black,
-//         ),
-//         centerTitle: true,
-//         title: const Text(
-//           "Scanned Result",
-//           style: TextStyle(
-//               fontWeight: FontWeight.bold, color: AppColors.primaryColor),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         reverse: false,
-//         child: Padding(
-//           padding: const EdgeInsets.all(60),
-//           child: Column(
-//             children: [
-//               QrImageView(
-//                 data: "",
-//                 size: 300,
-//                 version: QrVersions.auto,
-//               ),
-//               const Text(
-//                 "Attendance updated successfully",
-//                 style: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 25,
-//                     fontWeight: FontWeight.bold),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               const Text(
-//                 "For",
-//                 style: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 25,
-//                     fontWeight: FontWeight.bold),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Text(
-//                 code,
-//                 textAlign: TextAlign.center,
-//                 style: const TextStyle(
-//                     color: Colors.black87,
-//                     fontSize: 20),
-//               ),
-//               const SizedBox(
-//                 height: 20,
-//               ),
-//               // SizedBox(
-//               //   width: MediaQuery.of(context).size.width - 150,
-//               //   height: 50,
-//               //   child: ElevatedButton(
-//               //       style: ElevatedButton.styleFrom(
-//               //           backgroundColor: Colors.black
-//               //       ),
-//               //       onPressed: () {
-//               //         Clipboard.setData(ClipboardData(text: code)).then((_) {
-//               //           ScaffoldMessenger.of(context).showSnackBar(
-//               //             const SnackBar(
-//               //               content: Text("Link copied to clipboard"),
-//               //               duration: Duration(seconds: 2),
-//               //             ),
-//               //           );
-//               //         });
-//               //       },
-//               //       child: const Text(
-//               //         "Copy URL",
-//               //         style: TextStyle(
-//               //             color: Colors.white,
-//               //             fontSize: 20
-//               //         ),
-//               //       )),
-//               // ),
-//               // const SizedBox(
-//               //   height: 20,
-//               // ),
-//               // SizedBox(
-//               //   width: MediaQuery.of(context).size.width - 150,
-//               //   height: 50,
-//               //   child: ElevatedButton(
-//               //       style: ElevatedButton.styleFrom(
-//               //           backgroundColor: Colors.black
-//               //       ),
-//               //       onPressed: () => _launchURL(context), // Pass the context to the _launchURL function
-//               //       child: const Text(
-//               //         "Open URL",
-//               //         style: TextStyle(
-//               //             color: Colors.white,
-//               //             fontSize: 20
-//               //         ),
-//               //       )),
-//               // ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

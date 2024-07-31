@@ -1,4 +1,4 @@
-Here's an updated README file for your "uog" Flutter project:
+Here's the updated README file for your "uog" Flutter project:
 
 ---
 
