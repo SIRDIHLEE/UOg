@@ -126,7 +126,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return QRResult(
-                            code: studentId ?? "Unknown Student ID",
+                            // code: studentId ?? "Unknown Student ID",
                             closeScreen: closeScreen,
                           );
                         }));
