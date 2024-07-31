@@ -14,6 +14,7 @@ import 'package:uog/src/students/dashboard/qrcode/qrcode.dart';
 import 'package:uog/src/students/dashboard/schedule/schedule_screen.dart';
 
 import 'dashboard.dart';
+import 'idcard/id.dart';
 
 class StudentDashBoard extends StatefulWidget {
   final User? user;
@@ -33,6 +34,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
     const QrCodeScreen(),
     const MessagesScreen(),
     // const VirtualScreen(),
+    const IdCardScreen(),
   ];
 
   void onTabTapped(int index) {
