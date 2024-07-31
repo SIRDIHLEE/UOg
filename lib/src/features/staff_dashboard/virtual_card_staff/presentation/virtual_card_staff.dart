@@ -42,7 +42,6 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
             final name = userData['name'] ?? 'New user. Please update your profile';
             final profilePicture = userData['profilePicture'] ?? '';
             final schoolId = userData['SCHOOLID'] ?? '000001111';
-
             return Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
