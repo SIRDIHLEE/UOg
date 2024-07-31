@@ -79,6 +79,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
           child: StreamBuilder<DocumentSnapshot>(
