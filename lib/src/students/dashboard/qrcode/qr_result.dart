@@ -23,6 +23,7 @@ class _QRResultState extends State<QRResult> {
   void initState() {
     super.initState();
     _fetchStudentDetails();
+    _checkIfUpdatedToday();
   }
 
   Future<void> _fetchStudentDetails() async {
@@ -49,6 +50,33 @@ class _QRResultState extends State<QRResult> {
     }
   }
 
+  Future<void> _checkIfUpdatedToday() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && _studentId != null) {
+      final currentDate = DateTime.now().toIso8601String().split('T')[0]; // YYYY-MM-DD
+      final attendanceRef = _firestore
+          .collection('attendance')
+          .doc(currentDate)
+          .collection('students')
+          .doc(_studentId!);
+
+      try {
+        DocumentSnapshot doc = await attendanceRef.get();
+
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          final status = data['status'];
+          setState(() {
+            _isUpdatedToday = status == 'Present';
+          });
+        }
+      } catch (e) {
+        print("Error checking attendance: $e");
+      }
+    }
+  }
+
   Future<bool> _updateAttendance(String studentId, String name) async {
     try {
       final currentDate = DateTime.now().toIso8601String().split('T')[0]; // YYYY-MM-DD
@@ -62,6 +90,7 @@ class _QRResultState extends State<QRResult> {
         'name': name,
         'id': studentId,
         'timestamp': FieldValue.serverTimestamp(),
+        'status': 'Present', // Add status here
       }, SetOptions(merge: true));
 
       return true;
@@ -98,6 +127,11 @@ class _QRResultState extends State<QRResult> {
         );
       },
     );
+
+    // Update the flag after successful update
+    setState(() {
+      _isUpdatedToday = true;
+    });
   }
 
   @override

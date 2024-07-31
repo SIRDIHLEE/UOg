@@ -19,7 +19,7 @@ class _AttendanceState extends State<Attendance> {
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
-    final String formattedDate = DateFormat('d MMMM yyyy').format(now);
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(now); // Format for Firestore
 
     return Column(
       children: [
@@ -29,7 +29,7 @@ class _AttendanceState extends State<Attendance> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              formattedDate,
+              DateFormat('d MMMM yyyy').format(now),
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -47,8 +47,8 @@ class _AttendanceState extends State<Attendance> {
             color: AppColors.attendanceBColor,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -62,7 +62,12 @@ class _AttendanceState extends State<Attendance> {
         SizedBox(height: 10),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
-            stream: _firestore.collection('attendance').orderBy('timestamp', descending: true).snapshots(),
+            stream: _firestore
+                .collection('attendance')
+                .doc(formattedDate)
+                .collection('students')
+                .orderBy('timestamp', descending: true)
+                .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
@@ -74,12 +79,20 @@ class _AttendanceState extends State<Attendance> {
                 itemCount: documents.length,
                 itemBuilder: (context, index) {
                   final data = documents[index].data() as Map<String, dynamic>;
-                  final name = data['name'];
-                  final studentId = data['studentId'];
+                  final name = data['name'] ?? 'N/A';
+                  final studentId = data['id'] ?? 'N/A';
+                  final status = data['status'] ?? 'Absent'; // Assuming 'status' is a field
 
                   return ListTile(
-                    title: Text(name),
-                    subtitle: Text(studentId),
+                    // title: Text(name),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(name),
+                        Text(studentId),
+                        Text(status, style: TextStyle(color: status == 'Present' ? Colors.green : Colors.red)),
+                      ],
+                    ),
                   );
                 },
               );
