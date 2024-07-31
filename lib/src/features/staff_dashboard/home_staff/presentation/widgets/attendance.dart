@@ -16,6 +16,9 @@ class Attendance extends StatefulWidget {
 class _AttendanceState extends State<Attendance> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  int presentCount = 0;
+  int absentCount = 0;
+
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
@@ -23,7 +26,7 @@ class _AttendanceState extends State<Attendance> {
 
     return Column(
       children: [
-        const AttendanceTile(),
+        AttendanceTile(presentCount: presentCount, absentCount: absentCount),
         SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,6 +77,26 @@ class _AttendanceState extends State<Attendance> {
               }
 
               final documents = snapshot.data!.docs;
+              int newPresentCount = 0;
+              int newAbsentCount = 0;
+
+              for (var doc in documents) {
+                final data = doc.data() as Map<String, dynamic>;
+                final status = data['status'] ?? 'Absent';
+                if (status == 'Present') {
+                  newPresentCount++;
+                } else {
+                  newAbsentCount++;
+                }
+              }
+
+              // Update the state with the new counts
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  presentCount = newPresentCount;
+                  absentCount = newAbsentCount;
+                });
+              });
 
               return ListView.builder(
                 itemCount: documents.length,
@@ -84,7 +107,6 @@ class _AttendanceState extends State<Attendance> {
                   final status = data['status'] ?? 'Absent'; // Assuming 'status' is a field
 
                   return ListTile(
-                    // title: Text(name),
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
