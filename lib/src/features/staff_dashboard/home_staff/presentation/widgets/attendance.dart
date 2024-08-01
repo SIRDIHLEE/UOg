@@ -69,6 +69,7 @@ class _AttendanceState extends State<Attendance> {
                 .collection('attendance')
                 .doc(formattedDate)
                 .collection('students')
+                .where('date', isEqualTo: formattedDate)
                 .orderBy('timestamp', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
