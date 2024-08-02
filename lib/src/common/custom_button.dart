@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
                       side: const BorderSide(
                         color: AppColors.primaryColor
                       ))),
-              backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
+              backgroundColor: MaterialStateProperty.all<Color>(buttonColor??AppColors.primaryColor),
             ),
         onPressed: onPressed,
         child: child ??

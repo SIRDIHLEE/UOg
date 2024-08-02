@@ -104,7 +104,9 @@ class _StaffState extends State<Staff> {
           const OrText(),
           SizedBox(height: 16.h),
           CustomizableButton(
-            onPressed: () {},
+            onPressed: () {print('clicking');
+              Navigator.pushReplacementNamed(context, Routes.guestDashboard);
+            },
             title: 'Continue as Guest',
           ),
           SizedBox(height: 12.h),

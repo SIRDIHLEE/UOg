@@ -7,14 +7,19 @@ abstract class AppColors {
 
   static const Color blackColor = Color(0xfF000000);
 
+  static const Color textColor1 = Color(0xfF010101);
+
   static const Color greyColor = Color(0xfFD9D9D9);
 
   static const Color textColor = Color(0xffF9F9F9);
+
+  static const Color textColor3 = Color(0xff1F2937);
 
 
   static const Color redColor = Color(0xffFF0000);
 
   static const Color textColor2 = Color(0xff34495E);
+
 
 
 
@@ -43,6 +48,9 @@ abstract class AppColors {
   static const Color settingsBColor = Color(0xffF5F5F5);
 
   static const Color scBColor = Color(0xff485C72);
+
+  static const Color bBColor = Color(0xff0A112F);
+
   static const Color dateBColor = Color(0xffF9AF8E);
 
   static const Color attendanceBColor = Color(0xff00497D);

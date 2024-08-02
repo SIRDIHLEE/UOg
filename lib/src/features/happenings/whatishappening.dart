@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/happenings/whatishappeningwidget.dart';
 
-class WhatishappeningScreen extends StatelessWidget {
-  const WhatishappeningScreen({super.key});
+import '../../common/custom_text.dart';
+
+class WhatIsHappeningScreen extends StatelessWidget {
+  const WhatIsHappeningScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
-        title: const Text("What's Happening", style: TextStyle(
+        backgroundColor: AppColors.scaffoldBackground,
+        title: CustomText(
+          inputText: "What's Happening",
+          textAlign: TextAlign.start,
+          fontSize: 20,
+          weight: FontWeight.w700,
           color: AppColors.primaryColor,
-          fontWeight: FontWeight.bold,
-        ),),
+        ),
         centerTitle: true,
       ),
       body: ListView(

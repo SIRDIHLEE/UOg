@@ -55,10 +55,23 @@ class ServiceTile extends StatelessWidget {
 
   }
 }
-class EateriesTile extends StatelessWidget {
+class EateriesTile extends StatefulWidget {
   const EateriesTile({
     super.key,
   });
+
+  @override
+  State<EateriesTile> createState() => _EateriesTileState();
+}
+
+class _EateriesTileState extends State<EateriesTile> {
+
+  final List<String> imageList = [
+    'assets/images/gold.png',
+    'assets/images/image 11(1).png',
+    'assets/images/image 12(1).png'
+  ];
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,133 +1,231 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:uog/src/common/custom_button.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/openday/widget/opendaytext.dart';
 import 'package:uog/src/features/openday/widget/opendaytextfield.dart';
 
-class Openday extends StatefulWidget {
-  const Openday({super.key});
+import '../../common/custom_text.dart';
+
+class OpenDay extends StatefulWidget {
+  const OpenDay({super.key});
 
   @override
-  State<Openday> createState() => _OpendayState();
+  State<OpenDay> createState() => _OpenDayState();
 }
 
-class _OpendayState extends State<Openday> {
+class _OpenDayState extends State<OpenDay> {
+  final _fullName = TextEditingController();
+  final _email = TextEditingController();
+  final _subject = TextEditingController();
+  final List<String> study = [
+   'Greenwich Business School',
+    'Faculty of Education & Human Sciences',
+    'Faculty of Engineering and Science',
+    'Faculty of Liberal Arts and Sciences',
+  ];
+
+  String? selectedStudy;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("Open Days",  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryColor),),
-        leading: const Icon(Icons.arrow_back),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: CustomText(
+          inputText: 'Open Days',
+          textAlign: TextAlign.start,
+          fontSize: 20,
+          weight: FontWeight.w700,
+          color: AppColors.primaryColor,
+        ),
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          Stack(children: [
-            Container(
-              child: Image.asset("assets/images/openday.png"),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20.h, right: 9.w, left: 9.w,bottom: 20.h),
+        child: Column(
+          children: [
+            Stack(children: [
+              Image.asset("assets/images/openday.png"),
+              Padding(
+                padding: EdgeInsets.only(top: 142.0.h, right: 6.w, left: 6.w,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      inputText: 'Next Open Day',
+                      textAlign: TextAlign.start,
+                      fontSize: 14,
+                      weight: FontWeight.w600,
+                      color: AppColors.scaffoldBackground,
+                    ),
+                    CustomText(
+                      inputText: 'Saturday 17th August',
+                      textAlign: TextAlign.start,
+                      fontSize: 14,
+                      weight: FontWeight.w600,
+                      color: AppColors.scaffoldBackground,
+                    ),
+                  ],
+                ),
+              )
+            ]),
+            SizedBox(
+              height: 17.h,
             ),
-            const Positioned(
-              // top: -100,
-              // bottom: 10,
-              child: ListTile(
-                leading: Text(
-                  "Next Open Day",
-                  style: TextStyle(color: AppColors.textColor, fontSize: 13),
-                ),
-                trailing: Text(
-                  "Saturday 17th August",
-                  style: TextStyle(color: AppColors.textColor, fontSize: 13),
-                ),
-              ),
-            )
-          ]),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "What to expect on an Open Day",
-                  style: TextStyle(
-                      color: AppColors.blackColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                CustomText(
+                  inputText: 'What to expect on an Open Day',
+                  textAlign: TextAlign.start,
+                  fontSize: 16,
+                  weight: FontWeight.w700,
+                  color: AppColors.blackColor,
                 ),
-                const Text(
-                  "Open Days give you a great sense of what it’s like to join our student community. As well as exploring our historic campus, you’ll get to take part in exciting taster sessions. These give you an idea of the style of learning you can expect once your course begins",
-                  style: TextStyle(fontSize: 16),
+                SizedBox(
+                  height: 5.h,
                 ),
+                CustomText(
+                  inputText:
+                      "Open Days give you a great sense of what it’s like to join our student community. As well as exploring our historic campus, you’ll get to take part in exciting taster sessions. These give you an idea of the style of learning you can expect once your course begins",
+                  textAlign: TextAlign.start,
+                  fontSize: 12,
+                  weight: FontWeight.w400,
+                  color: AppColors.blackColor,
+                ),
+                 SizedBox(
+                  height: 20.h,
+                ),
+                CustomText(
+                  inputText: 'Open Day schedules',
+                  textAlign: TextAlign.start,
+                  fontSize: 16,
+                  weight: FontWeight.w700,
+                  color: AppColors.blackColor,
+                ),
+
                 const SizedBox(
                   height: 15,
                 ),
-                const Text(
-                  "Open Day schedules",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.blackColor),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                const OpenDayText(text: "Name"),
                 OpenDayTextField(
-                  labeltext: 'Enter your full name',
-                  onChanged: (String value) {},
+                  inputController: _fullName,
+                  inputHintText: 'Name',
+                  keyboardType: TextInputType.name,
+                  header: 'Name',
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const OpenDayText(text: "Email Address"),
+                SizedBox(height: 16.h),
                 OpenDayTextField(
-                  labeltext: 'Enter your Email Address',
-                  onChanged: (String value) {},
+                  inputController: _email,
+                  inputHintText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  header: 'Email Address',
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const OpenDayText(text: "Area of Study"),
-                // Text("drop down"),
-                OpenDayTextField(
-                  labeltext: 'Enter your Email Address',
-                  onChanged: (String value) {},
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const OpenDayText(text: "Subject"),
-                OpenDayTextField(
-                  labeltext: 'Enter Subject ',
-                  onChanged: (String value) {},
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  decoration: const BoxDecoration(
-                      // borderRadius: BorderRadius.circular(8),
+                SizedBox(height: 16.h),
+                CustomText(
+                  inputText: 'Area of Study',
+                  fontSize: 14,
+                  weight: FontWeight.w600,
+                  color: AppColors.iconColor,),
+                SizedBox(height: 8.h,),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2<String>(
+                    isExpanded: true,
+                    hint:  Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Select an Option',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.50),
+                            ),
+                            // overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    items: study
+                        .map((String item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                  child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
+                    ))
+                        .toList(),
+                    value: selectedStudy,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedStudy = value;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 54.h,
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(left: 14, right: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black26,
+                        ),
+
                       ),
-                      child: const Text(
-                        "Submit",
-                        style: TextStyle(color: AppColors.textColor),
-                      )),
-                )
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_sharp,size:24,
+                      ),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.black,
+                      iconDisabledColor: Colors.grey,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.white,
+                      ),
+
+                      offset: const Offset(0, 0),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(40),
+                        thickness: MaterialStateProperty.all<double>(6),
+                        thumbVisibility: MaterialStateProperty.all<bool>(true),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.only(left: 14, right: 14),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                OpenDayTextField(
+                  inputController: _subject,
+                  inputHintText: 'Enter Subject',
+                  keyboardType: TextInputType.text,
+                  header: 'Subject',
+                ),
+                 SizedBox(
+                  height: 20.h,
+                ),
+                CustomButton(onPressed: (){},title: 'Submit',
+                borderRadius: 10,buttonColor: AppColors.tour,
+                ),
               ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
