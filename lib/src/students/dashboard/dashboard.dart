@@ -8,8 +8,10 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
+import 'package:uog/src/students/dashboard/student_attendance/student_attendance.dart';
 import 'package:uog/src/students/dashboard/student_profile/presentation/student_profile.dart';
 
+import 'library/library.dart';
 import 'module/module.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
@@ -333,29 +335,39 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
           child: ListTile(
-            leading: Text(
-              "Leading Support",
+            leading: const Text(
+              "Library Support",
               style: TextStyle(color: AppColors.textColor, fontSize: 18),
             ),
-            trailing: Icon(
-              Icons.arrow_forward,
-              color: AppColors.textColor,
+            trailing: IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LibraryScreen()));
+              },
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: AppColors.textColor,
+              ),
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
-          child: ListTile(
-            leading: Text(
+          child:  ListTile(
+            leading: const Text(
               "View My Attendance",
               style: TextStyle(color: AppColors.textColor, fontSize: 18),
             ),
-            trailing: Icon(
-              Icons.arrow_forward,
-              color: AppColors.textColor,
+            trailing: IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentAttendance()));
+              },
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: AppColors.textColor,
+              ),
             ),
           ),
         ),
