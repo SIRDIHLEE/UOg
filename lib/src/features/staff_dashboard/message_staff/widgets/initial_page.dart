@@ -35,7 +35,7 @@ class InitialPage extends StatelessWidget {
                 _showNewMessageSheet(context);
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
+                backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF132238)),
               ),
               child: const Text('New Message', style: TextStyle(color: Colors.white),),
             ),

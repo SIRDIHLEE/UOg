@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/colors.dart';
 // import 'package:uog/src/features/busservice/widget/busservice_title_area.dart';
 
@@ -16,14 +17,14 @@ final String   leading, trailing, subtitle;
                  Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(subtitle, style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 18),),
+                    Text(subtitle, style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 16.sp),),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(leading, style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.bold, fontSize: 12),),
-                     Text(trailing, style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.bold, fontSize: 12)),
+                    Text(leading, style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.bold, fontSize: 12.sp),),
+                     Text(trailing, style: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.bold, fontSize: 12.sp)),
                   ],
                 ),
               ],

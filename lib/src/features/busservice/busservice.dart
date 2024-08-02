@@ -36,9 +36,9 @@ class Busservice extends StatelessWidget {
          
           // const SizedBox(height: 5,),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 4, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16.0, 4, 4, 16),
               child: Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(12),
               height: 320,
               decoration: const BoxDecoration(color: Colors.white),
               child: const Column(

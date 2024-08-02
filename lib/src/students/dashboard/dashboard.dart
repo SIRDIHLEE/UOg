@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
+import 'package:uog/src/features/busservice/busservice.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 import 'package:uog/src/students/dashboard/student_attendance/student_attendance.dart';
 import 'package:uog/src/students/dashboard/student_profile/presentation/student_profile.dart';
@@ -282,13 +283,77 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        Image.asset(
-                          "assets/images/dash1.png",
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Busservice()));
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/dash1.png",
+                              ),
+                               Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  "Bus Service",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(width: 8),
-                        Image.asset("assets/images/dash2.png"),
+                        InkWell(
+                          onTap: () {
+                            // Handle tap on campus tour image
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/dash2.png",
+                              ),
+                              const Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  "Campus Tour",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         SizedBox(width: 8),
-                        Image.asset("assets/images/dash4.png"),
+                        InkWell(
+                          onTap: () {
+                            // Handle tap on attendance image
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/dash4.png",
+                              ),
+                              const Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  "Accomodation",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
