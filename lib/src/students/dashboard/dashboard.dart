@@ -40,13 +40,18 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   }
 
   Future<void> fetchUserData() async {
-    final userId = FirebaseAuth.instance.currentUser?.uid; // Get the current user ID
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid; // Get the current user ID
     if (userId != null) {
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
       if (userDoc.exists) {
         setState(() {
           userName = userDoc.data()?['name'] ?? 'New user';
-          profilePictureUrl = userDoc.data()?['profilePicture'] ?? ''; // Fetch the profile picture URL
+          profilePictureUrl = userDoc.data()?['profilePicture'] ??
+              ''; // Fetch the profile picture URL
         });
       }
     }
@@ -75,8 +80,6 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
       date = formattedDate;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -119,9 +122,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     height: 25,
                   ),
                 ),
-                const SizedBox(width: 5,),
+                const SizedBox(
+                  width: 5,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -159,7 +164,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   child: Text(
                     "Today",
                     style: TextStyle(
-                      decoration: showToday ? TextDecoration.underline : TextDecoration.none,
+                      decoration: showToday
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -174,7 +181,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   child: Text(
                     "Modules",
                     style: TextStyle(
-                      decoration: !showToday ? TextDecoration.underline : TextDecoration.none,
+                      decoration: !showToday
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -200,11 +209,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             borderRadius: BorderRadius.circular(10),
             gradient: const LinearGradient(
               colors: [
-                 Color(0xFFFFFFFF),
-                 Color(0xFF1D224E),
+                Color(0xFFFFFFFF),
+                Color(0xFF1D224E),
               ],
-              begin:  FractionalOffset(0.0, 0.0),
-              end:  FractionalOffset(0.0, 1.0),
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(0.0, 1.0),
             ),
           ),
           child: Row(
@@ -247,9 +256,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     ),
                     const Expanded(
                         child: Text(
-                          "⛅ Light rain|Remember \nto carry a light jacket",
-                          style: TextStyle(color: AppColors.textColor, fontSize: 11),
-                        ))
+                      "⛅ Light rain|Remember \nto carry a light jacket",
+                      style:
+                          TextStyle(color: AppColors.textColor, fontSize: 11),
+                    ))
                   ],
                 ),
               )
@@ -285,7 +295,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Busservice()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Busservice()));
                           },
                           child: Stack(
                             alignment: Alignment.center,
@@ -293,7 +306,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                               Image.asset(
                                 "assets/images/dash1.png",
                               ),
-                               Align(
+                              Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
                                   "Bus Service",
@@ -368,24 +381,24 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 ),
                 Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Image.asset(
-                            "assets/images/cam2.png",
-                          ),
-                          SizedBox(width: 8),
-                          Image.asset(
-                            "assets/images/cam1.png",
-                          ),
-                          SizedBox(width: 8),
-                          Image.asset(
-                            "assets/images/camp4.png",
-                          ),
-                        ],
+                  padding: const EdgeInsets.all(10.0),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Image.asset(
+                        "assets/images/cam2.png",
                       ),
-                    ))
+                      SizedBox(width: 8),
+                      Image.asset(
+                        "assets/images/cam1.png",
+                      ),
+                      SizedBox(width: 8),
+                      Image.asset(
+                        "assets/images/camp4.png",
+                      ),
+                    ],
+                  ),
+                ))
               ],
             )),
         const Text(
@@ -405,8 +418,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               style: TextStyle(color: AppColors.textColor, fontSize: 18),
             ),
             trailing: IconButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LibraryScreen()));
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LibraryScreen()));
               },
               icon: const Icon(
                 Icons.arrow_forward,
@@ -420,14 +436,17 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
           decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
-          child:  ListTile(
+          child: ListTile(
             leading: const Text(
               "View My Attendance",
               style: TextStyle(color: AppColors.textColor, fontSize: 18),
             ),
             trailing: IconButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentAttendance()));
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StudentAttendance()));
               },
               icon: const Icon(
                 Icons.arrow_forward,
@@ -444,5 +463,3 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     return const ModuleOverviewScreen();
   }
 }
-
-

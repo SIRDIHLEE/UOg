@@ -19,6 +19,7 @@ class CustomButton extends StatelessWidget {
   final Widget? child;
   final ButtonStyle? style;
   final bool? active;
+
   const CustomButton({
     required this.onPressed,
     this.title,
@@ -38,7 +39,9 @@ class CustomButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SizedBox(
       width: width ?? double.maxFinite,
       height: height ?? 54.h,
@@ -51,10 +54,9 @@ class CustomButton extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(borderRadius ?? 10.r),
-                      side: const BorderSide(
-                        color: AppColors.primaryColor
-                      ))),
-              backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
+                      side: const BorderSide(color: AppColors.primaryColor))),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(AppColors.primaryColor),
             ),
         onPressed: onPressed,
         child: child ??
@@ -86,6 +88,7 @@ class CustomizableButton extends StatelessWidget {
   final Widget? child;
   final ButtonStyle? style;
   final bool? noWidth;
+
   const CustomizableButton({
     required this.onPressed,
     this.title,
@@ -105,7 +108,9 @@ class CustomizableButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SizedBox(
       width: noWidth == true ? null : width ?? double.maxFinite,
       height: height ?? 46.h,
@@ -118,17 +123,20 @@ class CustomizableButton extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(borderRadius ?? 10.r),
-                      side: BorderSide(color: borderColor ?? AppColors.blackColor.withOpacity(0.50)))),
+                      side: BorderSide(
+                          color: borderColor ??
+                              AppColors.blackColor.withOpacity(0.50)))),
               backgroundColor: MaterialStateProperty.all<Color>(
                   buttonColor ?? AppColors.ash),
             ),
         onPressed: onPressed,
-        child: child ??CustomText(
-          inputText: title!,
-          textAlign: TextAlign.center,
-          fontSize: 14,
-          weight: FontWeight.w500,
-          color: AppColors.blackColor,
+        child: child ??
+            CustomText(
+              inputText: title!,
+              textAlign: TextAlign.center,
+              fontSize: 14,
+              weight: FontWeight.w500,
+              color: AppColors.blackColor,
             ),
       ),
     );

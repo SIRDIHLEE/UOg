@@ -30,7 +30,8 @@ class _StaffState extends State<Staff> {
     });
 
     try {
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text,
         password: _passwordController.text,
       );
@@ -38,7 +39,8 @@ class _StaffState extends State<Staff> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        if (_email.text == 'kolawole2024@outlook.com' || _email.text == 'sammy2024@outlook.com') {
+        if (_email.text == 'kolawole2024@outlook.com' ||
+            _email.text == 'sammy2024@outlook.com') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Access denied for this email.')),
           );

@@ -30,7 +30,8 @@ class _StudentsState extends State<Students> {
     });
 
     try {
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text,
         password: _passwordController.text,
       );
