@@ -9,9 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uog/src/common/custom_button.dart';
 import 'package:uog/src/constant/colors.dart';
+import 'package:uog/src/features/auth/presentation/views/signIn.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/log_out.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/password_changed.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/settings_tiles.dart';
+import 'package:uog/src/students/dashboard/student_profile/presentation/widgets/student_settings.dart';
 import '../../../../common/alert_dialog.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
@@ -25,9 +27,6 @@ class StudentProfile extends StatefulWidget {
 
 class _StudentProfileState extends State<StudentProfile> {
   final _fullName = TextEditingController();
-  final _phone = TextEditingController();
-  final _email = TextEditingController();
-  final _password = TextEditingController();
   bool switchValue1 = false;
   bool _isObscured = true;
   String? _profilePicUrl;
@@ -54,8 +53,6 @@ class _StudentProfileState extends State<StudentProfile> {
         if (doc.exists) {
           setState(() {
             _fullName.text = doc['name'] ?? 'New User';
-            _phone.text = doc['phone_num'] ?? '';
-            _email.text = doc['email'] ?? '';
             _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
             _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
             _schoolId = doc['SCHOOLID'] ?? '000011111';
@@ -79,8 +76,6 @@ class _StudentProfileState extends State<StudentProfile> {
       try {
         await docRef.set({
           'name': _fullName.text,
-          'phone_num': _phone.text,
-          'email': _email.text,
           'profilePicture': _profilePicUrl,
         }, SetOptions(merge: true));
 
@@ -107,128 +102,115 @@ class _StudentProfileState extends State<StudentProfile> {
 
   void _onLogout() {
     FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    CustomAlertDialog.showAlertDialog(
+      context: context,
+      height: 155.h,
+      isDissmisable: false,
+      child: LogOut(
+        onConfirmLogout: () {
+          Navigator.of(context).pop(); // Close the dialog
+          _onLogout(); // Call the logout function
+        },
+        onCancel: () {
+          Navigator.of(context).pop(); // Close the dialog
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text("Profile", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined, size: 32.w,),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(11.w, 51.h, 11.w, 11.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back_outlined),
-                  onPressed: () => Navigator.of(context).pop(),
+        padding: EdgeInsets.fromLTRB(11.w, 0.h, 11.w, 11.h),
+        child: Center(
+          child: Column(
+            children: [
+              Text("Edit", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),),
+                  SizedBox(height: 12.h,),
+              SettingsCard(
+                profilePicUrl: _profilePicUrl,
+                displayName: _displayName,
+                onProfilePicTap: (){},
+                schoolId: _schoolId,
+              ),
+              SizedBox(height: 104.h),
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF364E68),
+                  borderRadius: BorderRadius.circular(10.r)
                 ),
-                SizedBox(width: 91.w),
-                CustomText(
-                  inputText: 'Settings',
-                  fontSize: 24,
-                  weight: FontWeight.w700,
-                  color: Colors.black,
+                child: Column(
+                  children: [
+                    ListTile(
+                        title: Text("Push Notifications", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                        leading: Icon(Icons.notifications_none, color: Colors.white, size: 20.06.h,),
+                        trailing: Transform.scale(
+                          scale: 0.75,
+                          child: CupertinoSwitch(
+                            value: switchValue1,
+                            activeColor: Colors.white,
+                            thumbColor: Colors.white,
+                            trackColor: Colors.white,
+                            onChanged: (bool value) {
+                              setState(() {
+                                switchValue1 = value;
+                              });
+                            },
+                          ),
+                        ),
+                    ),
+                    ListTile(
+                      title: Text("Settings", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                      leading: Icon(Icons.settings, color: Colors.white, size: 20.06.h,),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentSettings()));
+                        },
+                        icon: Icon(Icons.chevron_right, color: Colors.white, size: 32.w,),
+                      )
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            SettingsCard(
-              profilePicUrl: _profilePicUrl,
-              displayName: _displayName,
-              onProfilePicTap: (){},
-              schoolId: _schoolId,
-            ),
-            SizedBox(height: 27.h),
-            CustomText(
-              inputText: 'Profile Settings',
-              fontSize: 18,
-              weight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            SizedBox(height: 16.h),
-            CustomInputField(
-              inputController: _fullName,
-              inputHintText: 'Full Name',
-              keyboardType: TextInputType.text,
-              header: 'Full Name',
-            ),
-            SizedBox(height: 16.h),
-            CustomInputField(
-              inputController: _email,
-              inputHintText: 'Email',
-              keyboardType: TextInputType.emailAddress,
-              header: 'Email',
-            ),
-            SizedBox(height: 16.h),
-            CustomInputField(
-              inputController: _phone,
-              inputHintText: 'Phone Number',
-              keyboardType: TextInputType.phone,
-              header: 'Phone Number',
-            ),
-            SizedBox(height: 27.h),
-            CustomText(
-              inputText: 'Notifications',
-              fontSize: 18,
-              weight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            SizedBox(height: 18.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  inputText: 'Push notifications',
-                  fontSize: 14,
-                  weight: FontWeight.w400,
-                  color: Colors.black,
+              ),
+              SizedBox(height: 180.h),
+              Container(
+                decoration: BoxDecoration(
+                    color: const Color(0xFF364E68),
+                    borderRadius: BorderRadius.circular(10.r)
                 ),
-                Transform.scale(
-                  scale: 0.75,
-                  child: CupertinoSwitch(
-                    value: switchValue1,
-                    activeColor: AppColors.primaryColor,
-                    onChanged: (bool value) {
-                      setState(() {
-                        switchValue1 = value;
-                      });
-                    },
-                  ),
+                child: Column(
+                  children: [
+                    ListTile(
+                        title: Text("Help & Support", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                    ),
+                    ListTile(
+                      title: Text("FAQ", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                    ),
+                    ListTile(
+                      title: GestureDetector(
+                          onTap: (){_showLogoutDialog(context);},
+                          child: Text("Logout", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),)),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            CustomText(
-              inputText: 'Notifications preferences',
-              fontSize: 14,
-              weight: FontWeight.w400,
-              color: Colors.black,
-            ),
-            SizedBox(height: 18.h),
-            CustomText(
-              inputText: 'Security',
-              fontSize: 18,
-              weight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            SizedBox(height: 11.h),
-            CustomPasswordInputField(
-              inputController: _password,
-              headerColor: AppColors.openday,
-              inputHintText: 'Password',
-              header: 'Change Password',
-              isObscured: _isObscured,
-              onPressed: () {
-                setState(() {
-                  _isObscured = !_isObscured;
-                });
-              },
-            ),
-            SizedBox(height: 20.h),
-            SettingsButtons(onSave: _saveChanges, onLogout: _onLogout),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -251,83 +233,68 @@ class SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 96.h,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
-        color: AppColors.settingsBColor,
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 18.w),
-          Stack(
-            children: [
-              GestureDetector(
+    return Column(
+      children: [
+        Stack(
+          children: [
+            GestureDetector(
+              onTap: onProfilePicTap,
+              child: profilePicUrl != null && profilePicUrl!.isNotEmpty
+                  ? ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                    child: Image.network(
+                                      profilePicUrl!,
+                                      height: 80.h,
+                                      width: 80.w,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                    return ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                      child: Image.asset(
+                        'assets/images/ugo_profile.jpg',
+                        height: 80.h,
+                        width: 80.w,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                                      },
+                                    ),
+                  )
+                  : Image.asset(
+                'assets/images/Ellipse 255.png',
+                height: 80.h,
+                width: 80.w,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              bottom: 8.h,
+              right: 8.w,
+              child: GestureDetector(
                 onTap: onProfilePicTap,
-                child: profilePicUrl != null && profilePicUrl!.isNotEmpty
-                    ? ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: Image.network(
-                                        profilePicUrl!,
-                                        height: 80.h,
-                                        width: 80.w,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                      return ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
-                        child: Image.asset(
-                          'assets/images/ugo_profile.jpg',
-                          height: 80.h,
-                          width: 80.w,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                                        },
-                                      ),
-                    )
-                    : Image.asset(
-                  'assets/images/Ellipse 255.png',
-                  height: 80.h,
-                  width: 80.w,
-                  fit: BoxFit.cover,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                  size: 24.h,
                 ),
               ),
-              Positioned(
-                bottom: 8.h,
-                right: 8.w,
-                child: GestureDetector(
-                  onTap: onProfilePicTap,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: 24.h,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(width: 20.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomText(
-                inputText: displayName,
-                fontSize: 20,
-                weight: FontWeight.w600,
-                color: Colors.black,
-              ),
-              CustomText(
-                inputText: 'Student ID: $schoolId',
-                fontSize: 16,
-                weight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        SizedBox(height:  20.h),
+        CustomText(
+          inputText: displayName,
+          fontSize: 20,
+          weight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        CustomText(
+          inputText: 'Student ID: $schoolId',
+          fontSize: 16.sp,
+          weight: FontWeight.w400,
+          color: Colors.black,
+        ),
+      ],
     );
   }
 }

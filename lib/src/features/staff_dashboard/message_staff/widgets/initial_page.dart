@@ -8,10 +8,11 @@ class InitialPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Messages"),
-        actions: const [
+        automaticallyImplyLeading: false,
+        actions:[
           Padding(
             padding: EdgeInsets.all(10.0),
-            child: Icon(Icons.mail),
+            child: IconButton(onPressed: (){_showNewMessageSheet(context);}, icon: const Icon(Icons.mail),)
           )
         ],
       ),

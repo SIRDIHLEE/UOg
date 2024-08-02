@@ -79,7 +79,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
+        automaticallyImplyLeading: false,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
           child: StreamBuilder<DocumentSnapshot>(
@@ -109,12 +109,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const StaffDashBoard()));
-                  },
+                  onTap: () {},
                   child: Image.asset(
                     "assets/images/noti.png",
                     color: Colors.black,

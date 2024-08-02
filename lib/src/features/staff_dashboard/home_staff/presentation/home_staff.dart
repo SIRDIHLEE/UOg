@@ -103,6 +103,9 @@ class _HomeStaffState extends State<HomeStaff> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.fromLTRB(18.w, 48.h, 18.w, 0),

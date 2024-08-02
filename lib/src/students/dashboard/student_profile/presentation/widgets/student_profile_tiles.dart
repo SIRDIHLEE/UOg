@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uog/src/common/custom_button.dart'; // Ensure this is implemented
+import 'package:uog/src/common/custom_button.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/log_out.dart';
 import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/widgets/password_changed.dart';

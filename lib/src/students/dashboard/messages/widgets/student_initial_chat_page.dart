@@ -8,10 +8,11 @@ class StudentInitialChatPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Messages"),
-        actions: const [
+        automaticallyImplyLeading: false,
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.mail),
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(onPressed: (){_showNewMessageSheet(context);}, icon: const Icon(Icons.mail),)
           )
         ],
       ),
