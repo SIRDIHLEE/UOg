@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:uog/src/common/custom_text.dart';
 import 'package:uog/src/features/staff_dashboard/home_staff/presentation/widgets/attendance.dart';
 import 'package:uog/src/features/staff_dashboard/home_staff/presentation/widgets/today.dart';
+import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/settings_staff.dart';
 
 import '../../../../constant/colors.dart';
 
@@ -104,40 +105,43 @@ class _HomeStaffState extends State<HomeStaff> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            CustomText(
+              inputText: 'Hi, $userName', // Use the fetched name here
+              fontSize: 16,
+              weight: FontWeight.w600,
+              color: Colors.black,
+            ),
+            const Spacer(),
+            Icon(
+              Iconsax.notification,
+              size: 20.sp,
+            ),
+            SizedBox(width: 7.w),
+            GestureDetector(
+              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsStaff()));},
+              child: CircleAvatar(
+                backgroundColor: Colors.grey,
+                backgroundImage: profilePictureUrl.isNotEmpty
+                    ? NetworkImage(profilePictureUrl)
+                    : null,
+                child: profilePictureUrl.isEmpty
+                    ? Icon(Icons.person, size: 20.sp, color: Colors.white)
+                    : null,
+              ),
+            )
+          ],
+        ),
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.fromLTRB(18.w, 48.h, 18.w, 0),
+        padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CustomText(
-                  inputText: 'Hi, $userName', // Use the fetched name here
-                  fontSize: 16,
-                  weight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                const Spacer(),
-                Icon(
-                  Iconsax.notification,
-                  size: 20.sp,
-                ),
-                SizedBox(width: 7.w),
-                CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: profilePictureUrl.isNotEmpty
-                      ? NetworkImage(profilePictureUrl)
-                      : null,
-                  child: profilePictureUrl.isEmpty
-                      ? Icon(Icons.person, size: 20.sp, color: Colors.white)
-                      : null,
-                )
-              ],
-            ),
-            SizedBox(height: 12.h),
             _buildTabBar(),
             Expanded(child: tabs[current]),
           ],

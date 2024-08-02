@@ -292,6 +292,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: ListView(
                       scrollDirection: Axis.horizontal,
+                      physics: const ScrollPhysics(),
                       children: [
                         InkWell(
                           onTap: () {

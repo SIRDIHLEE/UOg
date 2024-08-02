@@ -96,6 +96,7 @@ class _StudentsState extends State<Students> {
             color: AppColors.blackColor,
           ),
           SizedBox(height: 8.h),
+          _isSending ? Center(child: CircularProgressIndicator()) :
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
