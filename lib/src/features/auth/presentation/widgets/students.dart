@@ -39,7 +39,7 @@ class _StudentsState extends State<Students> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        if (_email.text == 'elvis2025@outlook.com') {
+        if (_email.text.toLowerCase() == 'elvis2025@outlook.com') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Access denied for this email.')),
           );

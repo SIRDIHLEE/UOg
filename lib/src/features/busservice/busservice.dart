@@ -16,7 +16,9 @@ class Busservice extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.bold, color: AppColors.primaryColor),
         ),
-        leading: const Icon(Icons.arrow_back),
+        leading: IconButton(
+            onPressed: (){Navigator.pop(context);},
+            icon: const Icon(Icons.arrow_back)),
         centerTitle: true,
       ),
       body: ListView(
