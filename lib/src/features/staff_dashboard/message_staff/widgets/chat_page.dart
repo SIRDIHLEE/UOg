@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uog/src/features/staff_dashboard/message_staff/widgets/new_message_sheet.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 
 class ChatPage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ChatPageState extends State<ChatPage> {
         title: Text(widget.user['name'] ?? 'Unknown User'),
         leading: GestureDetector(
           onTap: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const StaffDashBoard()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  NewMessageSheet()));
           },
           child: const Icon(Icons.chevron_left, size: 30,),),/// Ensure user name exists
       ),

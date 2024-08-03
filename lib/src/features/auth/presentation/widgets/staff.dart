@@ -38,7 +38,7 @@ class _StaffState extends State<Staff> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        if (_email.text == 'kolawole2024@outlook.com' || _email.text == 'sammy2024@outlook.com') {
+        if (_email.text.toLowerCase() == 'kolawole2024@outlook.com' || _email.text.toLowerCase() == 'sammy2024@outlook.com') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Access denied for this email.')),
           );
@@ -95,6 +95,7 @@ class _StaffState extends State<Staff> {
             color: AppColors.blackColor,
           ),
           SizedBox(height: 8.h),
+          _isSending ? Center(child: CircularProgressIndicator()) :
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
@@ -112,7 +113,7 @@ class _StaffState extends State<Staff> {
           SizedBox(height: 12.h),
           CustomizableButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.staffDashboard);
+              // Navigator.pushReplacementNamed(context, Routes.staffDashboard);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

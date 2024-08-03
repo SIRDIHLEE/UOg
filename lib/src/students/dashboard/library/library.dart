@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/students/dashboard/library/library_item.dart';
 
@@ -9,22 +10,28 @@ class LibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
-        title: Text("Library"),
+        leading: IconButton(
+            onPressed: (){Navigator.pop(context);},
+            icon: const Icon(Icons.arrow_back)),
+        title: const Text("Library"),
         centerTitle: true,
       ),
       body: ListView(
         children: [
           Container(
             child: Stack(children: [
-              Image.asset("assets/images/librec.png"),
+              Image.asset("assets/images/librec.png",),
               Positioned(
-                  top: 50,
+                  top: 10,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "The university libraries are filled with so much more than\nbooks. They are great places to work, or collaborate\nquietly with computers, printers and scanners throughout",
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      child: Text(
+                        "The university libraries are filled with so much \nmore than books. They are great places to \nwork, or collaborate quietly with computers, \nprinters, and scanners throughout",
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        maxLines: null,
+                        softWrap: true,
+                      ),
                     ),
                   ))
             ]),

@@ -163,7 +163,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Text("Loading.....", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey.shade200),));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || !snapshot.data!.exists) {

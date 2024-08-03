@@ -8,10 +8,11 @@ class InitialPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Messages"),
-        actions: const [
+        automaticallyImplyLeading: false,
+        actions:[
           Padding(
             padding: EdgeInsets.all(10.0),
-            child: Icon(Icons.mail),
+            child: IconButton(onPressed: (){_showNewMessageSheet(context);}, icon: const Icon(Icons.mail),)
           )
         ],
       ),
@@ -34,7 +35,7 @@ class InitialPage extends StatelessWidget {
                 _showNewMessageSheet(context);
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
+                backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF132238)),
               ),
               child: const Text('New Message', style: TextStyle(color: Colors.white),),
             ),

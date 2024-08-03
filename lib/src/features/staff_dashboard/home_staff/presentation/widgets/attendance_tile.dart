@@ -3,11 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../common/custom_text.dart';
 import '../../../../../constant/colors.dart';
-class AttendanceTile extends StatelessWidget {
+
+class AttendanceTile extends StatefulWidget {
+  final int presentCount;
+  final int absentCount;
+
   const AttendanceTile({
     super.key,
+    required this.presentCount,
+    required this.absentCount,
   });
 
+  @override
+  _AttendanceTileState createState() => _AttendanceTileState();
+}
+
+class _AttendanceTileState extends State<AttendanceTile> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -32,7 +43,7 @@ class AttendanceTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomText(
-                inputText: '01',
+                inputText: widget.presentCount.toString(),
                 textAlign: TextAlign.start,
                 fontSize: 30,
                 weight: FontWeight.w600,
@@ -69,7 +80,7 @@ class AttendanceTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomText(
-                inputText: '00',
+                inputText: widget.absentCount.toString(),
                 textAlign: TextAlign.start,
                 fontSize: 30,
                 weight: FontWeight.w600,
@@ -85,7 +96,6 @@ class AttendanceTile extends StatelessWidget {
             ],
           ),
         ),
-
       ],
     );
   }

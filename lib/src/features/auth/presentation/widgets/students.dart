@@ -30,7 +30,8 @@ class _StudentsState extends State<Students> {
     });
 
     try {
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text,
         password: _passwordController.text,
       );
@@ -38,7 +39,7 @@ class _StudentsState extends State<Students> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        if (_email.text == 'elvis2025@outlook.com') {
+        if (_email.text.toLowerCase() == 'elvis2025@outlook.com') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Access denied for this email.')),
           );
@@ -95,6 +96,7 @@ class _StudentsState extends State<Students> {
             color: AppColors.blackColor,
           ),
           SizedBox(height: 8.h),
+          _isSending ? Center(child: CircularProgressIndicator()) :
           CustomButton(
             title: 'Sign In',
             borderRadius: 10,
@@ -104,14 +106,13 @@ class _StudentsState extends State<Students> {
           const OrText(),
           SizedBox(height: 16.h),
           CustomizableButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.guestDashboard);
-            },
+            onPressed: () {},
             title: 'Continue as Guest',
           ),
           SizedBox(height: 12.h),
           CustomizableButton(
             onPressed: () {
+              // Navigator.pushReplacementNamed(context, Routes.dashboard);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

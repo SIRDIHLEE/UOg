@@ -47,15 +47,15 @@ class SettingsButtons extends StatelessWidget {
             height: 47.h,
             width: 155.w,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.textField),
+              border: Border.all(color: AppColors.redColor,),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
               child: CustomText(
-                inputText: 'Log out',
+                inputText: 'Cancel',
                 fontSize: 16,
                 weight: FontWeight.w400,
-                color: AppColors.textField,
+                color: AppColors.redColor,
               ),
             ),
           ),

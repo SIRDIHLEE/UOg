@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uog/src/students/dashboard/dashboard.dart';
+import 'package:uog/src/students/dashboard/messages/widgets/student_new_message_screen.dart';
 import 'package:uog/src/students/dashboard/student-dashboard.dart';
 
 class StudentChatPage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _StudentChatPageState extends State<StudentChatPage> {
         title: Text(widget.user['name'] ?? 'Unknown User'),
         leading: GestureDetector(
           onTap: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const StudentDashBoard()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> StudentNewMessageSheet()));
           },
           child: const Icon(Icons.chevron_left, size: 30,),),// Ensure user name exists
       ),

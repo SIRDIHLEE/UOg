@@ -9,7 +9,7 @@ class MessagesItem extends StatelessWidget {
       children: [
         Image.asset("assets/images/elip.png", height: 70 ),
         SizedBox(width: 10,),
-        Column(
+        const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Rowen Wright", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),),
