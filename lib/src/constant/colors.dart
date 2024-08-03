@@ -42,6 +42,12 @@ abstract class AppColors {
 
   static const Color settingsBColor = Color(0xffF5F5F5);
 
+  static const Color scBColor = Color(0xff485C72);
+
+  static const Color bBColor = Color(0xff0A112F);
+
+  static const Color dateBColor = Color(0xffF9AF8E);
+
   static const Color attendanceBColor = Color(0xff00497D);
 
 
