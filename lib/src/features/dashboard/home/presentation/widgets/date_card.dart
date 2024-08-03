@@ -6,8 +6,11 @@ import '../../../../../constant/colors.dart';
 
 class HomeDateCard extends StatelessWidget {
   const HomeDateCard({
-    super.key,
+    super.key, required this.date, required this.degree,
   });
+
+  final String date;
+  final String degree;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,14 @@ class HomeDateCard extends StatelessWidget {
           children: [
             SizedBox(height: 193.h,),
             CustomText(
-              inputText: "Thursday, Aug 01 ",
+              inputText: date??'Thursday, Aug 01',
               textAlign: TextAlign.center,
               fontSize: 14,
               weight: FontWeight.w500,
               color: AppColors.navColor,
             ),
             CustomText(
-              inputText: "Good Evening!",
+              inputText: "Good Morning!",
               textAlign: TextAlign.center,
               fontSize: 24,
               weight: FontWeight.w700,
@@ -43,7 +46,7 @@ class HomeDateCard extends StatelessWidget {
             ),
             SizedBox(height: 6.h,),
             CustomText(
-              inputText: "21ºC | Mostly Cloudly | feels like 15ºC",
+              inputText: "$degree | Mostly Cloudly | feels like 15ºC",
               textAlign: TextAlign.center,
               fontSize: 14,
               weight: FontWeight.w500,

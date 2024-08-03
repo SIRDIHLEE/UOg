@@ -270,7 +270,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
                   SizedBox(height: 11.h),
                   CustomPasswordInputField(
                     inputController: _password,
-                    headerColor: AppColors.openday,
+                    headerColor: AppColors.openDayColor,
                     inputHintText: 'Password',
                     header: 'Change Password',
                     isObscured: _isObscured,

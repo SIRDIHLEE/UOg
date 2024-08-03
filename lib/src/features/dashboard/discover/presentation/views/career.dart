@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../common/custom_text.dart';
 import '../../../../../constant/colors.dart';
@@ -49,11 +50,9 @@ class _CareerScreenState extends State<CareerScreen> {
             SizedBox(height: 10.h,),
 
 
-            // We are looking for colleagues who share our values and behaviours, and have the dynamism, expertise and enthusiasm to thrive as part of our professional community. If you think you can help the university to continue to be a great place for teaching and research, please consider applying for one of the vacancies posted on our webpages
             //
-            // The university welcomes people from diverse and underrepresented communities who can help the university to achieve its mission. We do this through taking positive action such as encouraging applications from Black, Asian and Minority Ethnic, disabled and LGBT+ and non-conforming people.
             //
-            // As part of our commitment to Equality, Diversity and Inclusion and Mentally Healthy Universities, we are committed to promoting and supporting the physical and mental health of all our staff, and removing barriers to improve inclusion. We encourage applicants to disclose experience of mental health problems so we can support them fully during our recruitment process and make any necessary reasonable adjustments. Any information disclosed will be kept confidential and separate from the job application form.
+
             // We are making significant strides to understand and continuously improve our employees’ experience and we are committed to implementing progressive diversity talent management.',
             //
             CustomText(
@@ -78,6 +77,92 @@ class _CareerScreenState extends State<CareerScreen> {
               fontSize: 12,
               weight: FontWeight.w400,
               color: AppColors.blackColor,
+            ),
+            SizedBox(height: 10.h,),
+            RichText(
+              text: TextSpan(
+                text: 'We are looking for colleagues who share our values and behaviours, and have the dynamism, expertise and enthusiasm to thrive as part of our professional community. If you think you can help the university to continue to be a great place for teaching and research, please consider applying for one of the',
+                style: GoogleFonts.montserrat(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.blackColor
+                ),
+                children:  <TextSpan>[
+                  TextSpan(text: ' vacancies posted on our webpages',
+                      style:GoogleFonts.montserrat(
+                      fontSize: 12.sp,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black
+                  ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.h,),
+            RichText(
+              text: TextSpan(
+                text: 'The university welcomes people from diverse and underrepresented communities who can help the university to achieve its mission. We do this through taking positive action such as encouraging applications from disabled and ',
+                style: GoogleFonts.montserrat(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.blackColor
+                ),
+                children:  <TextSpan>[
+                  TextSpan(text: 'Black, Asian and Minority Ethnic,',
+                    style:GoogleFonts.montserrat(
+                        fontSize: 12.sp,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                    ),
+                  ),
+                  TextSpan(text: ' and',
+                    style:GoogleFonts.montserrat(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                    ),
+                  ),
+                  TextSpan(text: ' LGBT+ and non-conforming people.',
+                    style:GoogleFonts.montserrat(
+                        fontSize: 12.sp,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.h,),
+            RichText(
+              text: TextSpan(
+                text: 'As part of our commitment to',
+                style: GoogleFonts.montserrat(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.blackColor
+                ),
+                children:  <TextSpan>[
+                  TextSpan(text: ' Equality, Diversity and Inclusion Mentally Healthy Universities',
+                    style:GoogleFonts.montserrat(
+                        fontSize: 12.sp,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                    ),
+                  ),
+
+                  TextSpan(text: ' we are committed to promoting and supporting the physical and mental health of all our staff, and removing barriers to improve inclusion. We encourage applicants to disclose experience of mental health problems so we can support them fully during our recruitment process and make any necessary reasonable adjustments. Any information disclosed will be kept confidential and separate from the job application form.',
+                    style:GoogleFonts.montserrat(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

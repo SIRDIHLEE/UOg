@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/colors.dart';
+
+import '../../../../../common/custom_text.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -15,8 +18,16 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("Settings",  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryColor),),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: CustomText(
+          inputText: 'Settings',
+          textAlign: TextAlign.start,
+          fontSize: 20,
+          weight: FontWeight.w700,
+          color: AppColors.primaryColor,
+        ),
         centerTitle: true,
         leading:
             IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
@@ -31,24 +42,29 @@ class _SettingsState extends State<Settings> {
               height: 10,
             ),
             ExpansionTile(
-              title: const Text(
-                "Account Settings",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+              title:CustomText(
+                inputText: 'Account settings',
+                textAlign: TextAlign.start,
+                fontSize: 15,
+                weight: FontWeight.w600,
+                color: AppColors.blackColor,
               ),
               trailing: _dropdownVal
-                  ? Icon(Icons.keyboard_arrow_down)
-                  : Icon(Icons.keyboard_arrow_down),
+                  ? const Icon(Icons.keyboard_arrow_down)
+                  : const Icon(Icons.keyboard_arrow_down),
 
               // IconButton(
               //     onPressed: (){},
               //     icon: const Icon(Icons.keyboard_arrow_down)),
-              children: const [
+              children:  [
                 ListTile(
-                  title: Text("Switch to staff/student account"),
+                  title:CustomText(
+                    inputText: 'Switch to staff/student account',
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    weight: FontWeight.w400,
+                    color: AppColors.blackColor,
+                  ),
                 )
               ],
               onExpansionChanged: (value) {
@@ -61,24 +77,29 @@ class _SettingsState extends State<Settings> {
               height: 2,
             ),
             ExpansionTile(
-              title: const Text(
-                "FAQ",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+              title: CustomText(
+                inputText: 'FAQ',
+                textAlign: TextAlign.start,
+                fontSize: 15,
+                weight: FontWeight.w600,
+                color: AppColors.blackColor,
               ),
               trailing: _faqdropDownVal
-                  ? Icon(Icons.keyboard_arrow_down)
-                  : Icon(Icons.keyboard_arrow_down),
+                  ? const Icon(Icons.keyboard_arrow_down)
+                  : const Icon(Icons.keyboard_arrow_down),
 
               // IconButton(
               //     onPressed: (){},
               //     icon: const Icon(Icons.keyboard_arrow_down)),
-              children: const [
+              children:  [
                 ListTile(
-                  title: Text("FAQ"),
+                  title:CustomText(
+                    inputText: 'FAQ',
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    weight: FontWeight.w400,
+                    color: AppColors.blackColor,
+                  ),
                 )
               ],
               onExpansionChanged: (value) {
@@ -90,27 +111,26 @@ class _SettingsState extends State<Settings> {
             const Divider(
               height: 2,
             ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
+             Padding(
+              padding: EdgeInsets.all(10.0.sp),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "About this App",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                  CustomText(
+                    inputText: 'About this app',
+                    textAlign: TextAlign.start,
+                    fontSize: 15,
+                    weight: FontWeight.w600,
+                    color: AppColors.blackColor,
                   ),
-                  Text(
-                    "Update available",
-                    style: TextStyle(
-                      color: Colors.black,
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
+                  SizedBox(height: 15.h,),
+                  CustomText(
+                    inputText: 'Update available',
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    weight: FontWeight.w400,
+                    color: AppColors.blackColor,
                   ),
                 ],
               ),

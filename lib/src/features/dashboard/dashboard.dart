@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:uog/src/constant/colors.dart';
+import 'package:uog/src/features/auth/presentation/views/signIn.dart';
 import 'package:uog/src/features/dashboard/profile/presentation/views/profile.dart';
 import 'package:uog/src/features/dashboard/settings/presentation/views/settings.dart';
 
+import '../../constant/route.dart';
 import 'discover/presentation/views/discover.dart';
 import 'home/presentation/views/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,12 +29,16 @@ class _DashBoardState extends State<DashBoard> {
     const Settings(),
     const Profile(),
   ];
-
   void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == 3) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SignIn()));
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +53,7 @@ class _DashBoardState extends State<DashBoard> {
           _buildBottomNavigationBarItem(0, Iconsax.home, 'Home'),
           _buildBottomNavigationBarItem(1, Iconsax.discover, 'Discover'),
           _buildBottomNavigationBarItem(2, Iconsax.setting_24, 'Settings'),
-          _buildBottomNavigationBarItem(3, Iconsax.profile_circle, 'Profile'),
+          _buildBottomNavigationBarItem(3, Iconsax.profile_circle, 'Sign in'),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
@@ -73,7 +79,7 @@ class _DashBoardState extends State<DashBoard> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color:
-                _currentIndex == index ? AppColors.primaryColor : Colors.white,
+                _currentIndex == index ? AppColors.navBColor : Colors.white,
           ),
           child: Icon(icon,
               size: 18,

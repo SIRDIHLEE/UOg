@@ -17,9 +17,7 @@ class AnnoucementScreen extends StatelessWidget {
       body: Container(
         color: Colors.grey.shade100,
         child: ListView(
-          
           children: [
-           
             annoucement_item(image: Image.asset('assets/images/frame1.png'), text: 'Event for prospective \nstudent:', subtitle: "From taster days to subject open evenings, find out more about what you'll study, where you'll study it and perhaps even meet who'll you'll be studying with."),
             const SizedBox(height: 15,),
             annoucement_item(image: Image.asset('assets/images/frame2.png'), text: "Teachers & Advisers", subtitle: "Whether you are a teacher or parent, we offer a range of events designed to assist you in helping others make life choice"),

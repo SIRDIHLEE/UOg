@@ -202,8 +202,8 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             borderRadius: BorderRadius.circular(10),
             gradient: const LinearGradient(
               colors: [
-                Color(0xFF60B5D5),
-                Color(0xFF1D224E),
+                Color(0xFF000000),
+                Color(0xFF1D224E)
               ],
               begin: FractionalOffset(0.0, 0.0),
               end: FractionalOffset(0.0, 1.0),

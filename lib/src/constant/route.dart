@@ -10,6 +10,7 @@ import '../features/auth/presentation/views/signIn.dart';
 import '../features/dashboard/dashboard.dart';
 import '../features/dashboard/discover/presentation/views/bus_service.dart';
 import '../features/dashboard/discover/presentation/views/career.dart';
+import '../features/dashboard/discover/presentation/views/tours.dart';
 import '../features/dashboard/home/presentation/views/annoucement.dart';
 import '../features/event/events.dart';
 import '../features/happenings/whatishappening.dart';
@@ -18,6 +19,7 @@ import '../features/onboarding/presentation/views/onboarding.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../features/onboarding/presentation/views/splash_screen.dart';
 import '../features/openday/openday.dart';
 import '../students/dashboard/dashboard.dart';
 import '../students/dashboard/student-dashboard.dart';
@@ -37,13 +39,14 @@ class Routes {
   static const whatIsHappeningScreen = 'whatIsHappeningScreen';
   static const eventsScreen = 'eventsScreen';
   static const careerScreen = 'careerScreen';
+  static const tours = 'tours';
 
 
   //routes
   static final routes = <String, Widget Function(BuildContext)>{
     // splash : (context) =>  const SplashScreen(),
     // splash : (context) =>  const IdCardScreen(),
-    splash: (context) => const SignIn(),
+    splash: (context) => const SplashScreen(),
     onboarding: (context) => const OnBoarding(),
     studentsScreen: (context) => const StudentsScreen(),
     staffDashboard: (context) => const StaffDashBoard(),
@@ -51,6 +54,7 @@ class Routes {
     guestDashboard: (context) => const DashBoard(),
     eventsScreen: (context) => const EventsScreen(),
     openDay: (context) => const OpenDay(),
+    tours: (context) => const Tours(),
     careerScreen: (context) => const CareerScreen(),
     announcementScreen: (context) => const AnnouncementScreen(),
     busService: (context) => const BusService(),

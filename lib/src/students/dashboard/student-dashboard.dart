@@ -80,7 +80,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
           padding:  EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentIndex == index ? AppColors.primaryColor : Colors.white,
+            color: _currentIndex == index ? AppColors.navBColor : Colors.white,
           ),
             child: Icon(icon,size:18,color: _currentIndex == index ? Colors.white : Colors.black),
         ),

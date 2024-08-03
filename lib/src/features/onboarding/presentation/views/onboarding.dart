@@ -87,8 +87,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                     borderRadius: 10,
                     onPressed: () {
                       selectedIndex==2?
-                      Navigator.pushReplacementNamed(
-                          context, Routes.signIn):
+                      Navigator.pushReplacementNamed(context, Routes.signIn):
                       _controller1.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.ease,

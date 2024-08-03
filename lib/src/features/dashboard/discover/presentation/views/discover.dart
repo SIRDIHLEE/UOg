@@ -4,6 +4,7 @@ import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/constant/route.dart';
 
 import '../../../../../common/custom_text.dart';
+import '../../../../virtualtours/virtual_tours.dart';
 
 class Discover extends StatefulWidget {
   const Discover({super.key});
@@ -117,53 +118,57 @@ class _DiscoverState extends State<Discover> {
                       ],),
                   ),
                   SizedBox(height: 9.h,),
-                  Container(
-                    height: 110.h,
-                    width: 160.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.bBColor,
-                      borderRadius: BorderRadius.circular(10.r),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pushNamed(context, Routes.tours);
+                    },
+                    child: Container(
+                      height: 110.h,
+                      width: 160.w,
+                      decoration: BoxDecoration(
+                        color: AppColors.bBColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 84.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: AppColors.blackColor,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.r),
+                                topRight: Radius.circular(10.r),
+                              ),
+                              child: Image.asset(
+                                'assets/images/Rectangle 53 (1).png',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                height: 84.h,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 4.0.w),
+                            child: CustomText(
+                              inputText: 'Virtual tours',
+                              textAlign: TextAlign.start,
+                              fontSize: 15,
+                              weight: FontWeight.w500,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                        ],),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 84.h,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: AppColors.blackColor,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.r),
-                              topRight: Radius.circular(10.r),
-                            ),
-                            child: Image.asset(
-                              'assets/images/Rectangle 53 (1).png',
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              height: 84.h,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 4.0.w),
-                          child: CustomText(
-                            inputText: 'Virtual tours',
-                            textAlign: TextAlign.start,
-                            fontSize: 15,
-                            weight: FontWeight.w500,
-                            color: AppColors.textColor,
-                          ),
-                        ),
-                      ],),
                   ),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-
                 children: [
                   Container(
                     height: 110.h,

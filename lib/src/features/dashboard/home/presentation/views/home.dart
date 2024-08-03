@@ -1,8 +1,15 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/constant/route.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../../common/custom_text.dart';
 import '../../../../staff_dashboard/home_staff/presentation/widgets/service_tile.dart';
@@ -18,6 +25,46 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  String temperature = '...';
+  String date = '';
+  String userName = '...'; // Initialize with default value
+  String profilePictureUrl = '';
+  final String apiKey = dotenv.env['API_KEY'] ?? '';
+  bool showToday = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchWeatherData();
+    fetchCurrentDate();
+    // No need to fetch user name here, we'll use StreamBuilder instead
+  }
+
+
+  Future<void> fetchWeatherData() async {
+    final response = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=$apiKey'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        temperature = '${data['main']['temp'].toStringAsFixed(0)}\u2103';
+      });
+    } else {
+      setState(() {
+        temperature = 'Error';
+      });
+    }
+  }
+
+  void fetchCurrentDate() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('EEEE, d MMMM').format(now);
+    setState(() {
+      date = formattedDate;
+    });
+  }
   final currentPageIndex = (0);
   final pageController = PageController();
   final List<String> imageList = [
@@ -47,13 +94,13 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const HomeDateCard(),
+             HomeDateCard(date: date, degree:temperature,),
             Padding(
               padding:  EdgeInsets.fromLTRB(10.w, 9.h, 10.w, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AnnouncementsTile(),
+                   AnnouncementsTile(),
                   SizedBox(height: 20.h,),
                   GestureDetector(
                     onTap: (){
@@ -130,17 +177,9 @@ class _HomeState extends State<Home> {
                     color: AppColors.blackColor,
                   ),
                   SizedBox(height: 10.h,),
-                  SizedBox(
+                  const SizedBox(
                     height: 230,
-                    child: ListView.builder(
-                      itemCount: 3,
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return const EateriesTile();
-                      },
-                    ),
+                    child: EateriesTile(),
                   ),
                 ],
               ),

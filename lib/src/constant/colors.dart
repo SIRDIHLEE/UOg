@@ -18,6 +18,8 @@ abstract class AppColors {
 
   static const Color redColor = Color(0xffFF0000);
 
+  static const Color tourColor = Color(0xffEBEBEB);
+
   static const Color textColor2 = Color(0xff34495E);
 
 
@@ -37,7 +39,7 @@ abstract class AppColors {
 
   static const Color textField = Color(0xff092F5B);
 
-  static const Color openday = Color(0xff4B5563);
+  static const Color openDayColor = Color(0xff4B5563);
 
   static const Color absentTColor = Color(0xff22C55E);
 

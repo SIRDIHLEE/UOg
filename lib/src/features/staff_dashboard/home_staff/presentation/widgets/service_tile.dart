@@ -67,57 +67,66 @@ class EateriesTile extends StatefulWidget {
 class _EateriesTileState extends State<EateriesTile> {
 
   final List<String> imageList = [
-    'assets/images/gold.png',
-    'assets/images/image 11(1).png',
-    'assets/images/image 12(1).png'
+    'assets/images/Rectangle 33.png',
+    'assets/images/Rectangle 33.png',
+    'assets/images/Rectangle 33.png',
+  ];
+  final List<String> addressList = [
+    'No. 92 Cafe\nBreakfast & Brunch, Coffee & Tea',
+    'Trafalgar Tavern\nBar, British Resturant, Pub ',
+    'The Cutty Sark\nBritish Resturant,Bar,Pub ',
   ];
 
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.only(right: 10.0.sp),
-      child: Container(
-        // height: 200.h,
-        width: 270.w,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.80),
-              spreadRadius: -5,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+    return ListView.builder(
+      itemCount: imageList.length,
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return    Padding(
+          padding:  EdgeInsets.only(right: 10.0.sp),
+          child: Container(
+            // height: 200.h,
+            width: 270.w,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.80),
+                  spreadRadius: -5,
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Padding(
-          padding:  EdgeInsets.all(5.0.sp),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset('assets/images/Rectangle 33.png',),
-              SizedBox(height: 10.h,),
-              CustomText(
-                inputText: 'No. 92 Cafe',
-                textAlign: TextAlign.start,
-                fontSize: 14,
-                weight: FontWeight.w500,
-                color: AppColors.blackColor,
+            child: Padding(
+              padding:  EdgeInsets.all(5.0.sp),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(imageList[index],),
+                  SizedBox(height: 10.h,),
+                  CustomText(
+                    inputText: addressList[index],
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    weight: FontWeight.w500,
+                    color: AppColors.blackColor,
+                  ),
+
+                ],
               ),
-              CustomText(
-                inputText: 'Breakfast & Brunch, Coffee & Tea',
-                textAlign: TextAlign.start,
-                fontSize: 14,
-                weight: FontWeight.w500,
-                color: AppColors.blackColor,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+
+
   }
 }
 

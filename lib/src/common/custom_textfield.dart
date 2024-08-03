@@ -48,7 +48,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
           inputText: widget.header??'',
           fontSize: 16,
           weight: FontWeight.w400,
-          color: AppColors.openday,),
+          color: AppColors.openDayColor,),
         SizedBox(height: widget.header == '' ? 0 : 9.h),
         Center(
           child: TextFormField(

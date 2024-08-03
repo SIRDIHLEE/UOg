@@ -206,19 +206,10 @@ class _TodayState extends State<Today> {
               weight: FontWeight.w600,
               color: AppColors.blackColor,
             ),
-            SizedBox(
+            const SizedBox(
               height: 230,
-              child: ListView.builder(
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return const EateriesTile();
-                },
-              ),
+              child: EateriesTile(),
             ),
-
             SizedBox(height: 20.h,),
 
           ],
