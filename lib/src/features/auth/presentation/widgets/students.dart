@@ -106,7 +106,9 @@ class _StudentsState extends State<Students> {
           const OrText(),
           SizedBox(height: 16.h),
           CustomizableButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, Routes.guestDashboard);
+            },
             title: 'Continue as Guest',
           ),
           SizedBox(height: 12.h),

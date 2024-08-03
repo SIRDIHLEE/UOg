@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uog/src/common/custom_button.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/openday/widget/opendaytext.dart';
@@ -153,10 +154,10 @@ class _OpenDayState extends State<OpenDay> {
                       value: item,
                       child: Text(
                         item,
-                        style: const TextStyle(
+                        style:  GoogleFonts.montserrat(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Colors.black
+                            color: AppColors.blackColor
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -169,7 +170,7 @@ class _OpenDayState extends State<OpenDay> {
                       });
                     },
                     buttonStyleData: ButtonStyleData(
-                      height: 54.h,
+                      height: 40.h,
                       width: double.infinity,
                       padding: const EdgeInsets.only(left: 14, right: 14),
                       decoration: BoxDecoration(

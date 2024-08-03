@@ -133,7 +133,7 @@ class _StudentSettingsState extends State<StudentSettings> {
                   SizedBox(height: 11.h),
                   CustomPasswordInputField(
                     inputController: _password,
-                    headerColor: AppColors.openday,
+                    headerColor: AppColors.openDayColor,
                     inputHintText: 'Enter your current password',
                     header: 'Current Password',
                     isObscured: _isObscured,
@@ -146,7 +146,7 @@ class _StudentSettingsState extends State<StudentSettings> {
                   SizedBox(height: 5.h),
                   CustomPasswordInputField(
                     inputController: _password,
-                    headerColor: AppColors.openday,
+                    headerColor: AppColors.openDayColor,
                     inputHintText: 'Enter your new password',
                     header: 'New Password',
                     isObscured: _isObscured,
