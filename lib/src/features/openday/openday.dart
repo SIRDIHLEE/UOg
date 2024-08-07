@@ -7,6 +7,7 @@ import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/openday/widget/opendaytext.dart';
 import 'package:uog/src/features/openday/widget/opendaytextfield.dart';
 
+import '../../common/alert_dialog.dart';
 import '../../common/custom_text.dart';
 
 class OpenDay extends StatefulWidget {
@@ -170,9 +171,9 @@ class _OpenDayState extends State<OpenDay> {
                       });
                     },
                     buttonStyleData: ButtonStyleData(
-                      height: 40.h,
+                      // height: 40.h,
                       width: double.infinity,
-                      padding: const EdgeInsets.only(left: 14, right: 14),
+                      padding:  EdgeInsets.all(5.sp),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
@@ -220,7 +221,49 @@ class _OpenDayState extends State<OpenDay> {
                  SizedBox(
                   height: 20.h,
                 ),
-                CustomButton(onPressed: (){},title: 'Submit',
+                CustomButton(onPressed: (){
+                  showDialog(
+                    context: context,
+                    useRootNavigator: true,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        insetPadding: EdgeInsets.symmetric(horizontal: 80.w),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            width: 196.w,
+                            height: 140.h,
+                            color: AppColors.scaffoldBackground,
+                            // padding: EdgeInsets.only(
+                            //   left: 40.w,right: 40.w,top: 8.h,bottom: 39.h,h
+                            // ),
+                            child:  Column(
+                              children: [
+                                SizedBox(height: 38.h,),
+                                CustomText(
+                                  inputText: 'Successfully registered!',
+                                  fontSize: 15,
+                                  weight: FontWeight.w600,
+                                  color: AppColors.blackColor,),
+                                SizedBox(height: 15.h,),
+                                Container(
+                                  height: 50.h,width: 50.w,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  child: const Icon(Icons.check,color: Colors.white,),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
+                },title: 'Submit',
                 borderRadius: 10,buttonColor: AppColors.tour,
                 ),
               ],

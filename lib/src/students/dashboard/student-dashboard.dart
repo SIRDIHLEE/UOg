@@ -56,7 +56,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
           _buildBottomNavigationBarItem(1, Iconsax.calendar, 'Schedule'),
           _buildBottomNavigationBarItem(2, Iconsax.barcode, 'Scan Code'),
           _buildBottomNavigationBarItem(3, Iconsax.message, 'Messages'),
-            _buildBottomNavigationBarItem(4, Iconsax.message, 'Virtual ID'),
+            _buildBottomNavigationBarItem(4, Iconsax.card, 'Virtual ID'),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,

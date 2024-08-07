@@ -45,6 +45,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
 import 'package:uog/src/constant/colors.dart';
@@ -70,10 +71,12 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: const Text(
+        backgroundColor: AppColors.scaffoldBackground,
+        title:  Text(
           "Scan QR Code",
-          style: TextStyle(
+          style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold, color: AppColors.primaryColor),
         ),
         centerTitle: true,
@@ -143,11 +146,11 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                   )
                 ],
               )),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10, 20, 20),
+           Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 10, 20, 20),
             child: Text(
               "Align the QR code within the frame to scan it.",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 13,
               ),
             ),

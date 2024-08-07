@@ -205,8 +205,7 @@ class StudentSettingsButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          // onTap: () => _showLogoutDialog(context), // Show dialog
-        onTap: () {},
+          onTap: () => _showLogoutDialog(context),
           child: Container(
             height: 47.h,
             width: 155.w,

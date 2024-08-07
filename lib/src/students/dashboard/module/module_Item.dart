@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uog/src/constant/colors.dart';
 
 class ModuleItem extends StatelessWidget {
@@ -13,11 +14,11 @@ final String title,text , course;
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Text(title, style: TextStyle(color: AppColors.textColor, fontSize: 20),),
-                  SizedBox(height: 2,),
-                  Text(text, style: TextStyle(color: AppColors.textColor),),
-                 SizedBox(height: 10,),
-                  Text(course, style: TextStyle(color: AppColors.textColor),)
+                  Text(title, style: GoogleFonts.poppins(color: AppColors.textColor, fontSize: 20),),
+                  const SizedBox(height: 2,),
+                  Text(text, style: GoogleFonts.poppins(color: AppColors.textColor),),
+                 const SizedBox(height: 10,),
+                  Text(course, style: GoogleFonts.poppins(color: AppColors.textColor),)
                   
                 ],),
               )

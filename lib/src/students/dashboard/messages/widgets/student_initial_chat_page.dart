@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/students/dashboard/messages/widgets/student_new_message_screen.dart';
 
 
@@ -6,8 +8,10 @@ class StudentInitialChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("Messages"),
+        backgroundColor: AppColors.scaffoldBackground,
+        title:  Text("Messages",style: GoogleFonts.poppins(),),
         automaticallyImplyLeading: false,
         actions: [
           Padding(
@@ -22,13 +26,13 @@ class StudentInitialChatPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+               Text(
                 'Start Conversation',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'You can view and reply to messages from here', style: TextStyle(fontSize: 12),
+               Text(
+                'You can view and reply to messages from here', style: GoogleFonts.poppins(fontSize: 12),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -39,7 +43,7 @@ class StudentInitialChatPage extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF132238)),
                 ),
-                child: const Text('New Message', style: TextStyle(color: Colors.white),),
+                child:  Text('New Message', style: GoogleFonts.poppins(color: Colors.white),),
               ),
             ],
           ),

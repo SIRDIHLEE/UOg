@@ -33,7 +33,6 @@ class _TodayState extends State<Today> {
   Future<void> fetchWeatherData() async {
     final response = await http.get(Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=$apiKey'));
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -193,7 +192,7 @@ class _TodayState extends State<Today> {
                       color: AppColors.blackColor,
                     ),
                     SizedBox(height: 16.h,),
-                    const ServiceTile(),
+                    const CreativeTile(),
                   ],
                 ),
               ),

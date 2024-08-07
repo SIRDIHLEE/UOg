@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/features/staff_dashboard/message_staff/widgets/new_message_sheet.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 
@@ -53,8 +57,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: Text(widget.user['name'] ?? 'Unknown User'),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: Text(widget.user['name'] ?? 'Unknown User',style:  GoogleFonts.poppins(),),
         leading: GestureDetector(
           onTap: (){
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  NewMessageSheet()));
@@ -94,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                           child: Text(
                             message['message'],
-                            style: TextStyle(color: isCurrentUser ? Colors.white : Colors.black),
+                            style:  GoogleFonts.poppins(color: isCurrentUser ? Colors.white : Colors.black),
                           ),
                         ),
                       ),
@@ -105,15 +111,15 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.only(bottom: 20.0.h,left: 16.w),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       hintText: 'Type a message...',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.r)),
                     ),
                     maxLines: null,
                     minLines: 1,

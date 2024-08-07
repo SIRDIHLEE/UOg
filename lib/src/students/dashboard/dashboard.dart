@@ -3,15 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
+import 'package:uog/src/constant/route.dart';
 import 'package:uog/src/features/busservice/busservice.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 import 'package:uog/src/students/dashboard/student_attendance/student_attendance.dart';
 import 'package:uog/src/students/dashboard/student_profile/presentation/student_profile.dart';
 
+import '../../common/custom_text.dart';
+import '../../features/staff_dashboard/home_staff/presentation/widgets/service_tile.dart';
 import 'library/library.dart';
 import 'module/module.dart';
 
@@ -84,8 +88,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        backgroundColor: AppColors.scaffoldBackground,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
           child: StreamBuilder<DocumentSnapshot>(
@@ -99,12 +105,12 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 final name = userData?['name'] ?? 'New User';
                 return Text(
                   "Hi, $name",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
                 );
               }
               return Text(
                 "Hi, ...",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
               );
             },
           ),
@@ -163,7 +169,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   },
                   child: Text(
                     "Today",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       decoration: showToday
                           ? TextDecoration.underline
                           : TextDecoration.none,
@@ -180,7 +186,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   },
                   child: Text(
                     "Modules",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       decoration: !showToday
                           ? TextDecoration.underline
                           : TextDecoration.none,
@@ -209,11 +215,12 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             borderRadius: BorderRadius.circular(10),
             gradient: const LinearGradient(
               colors: [
-                Color(0xFFFFFFFF),
+                Color(0xFF000000),
                 Color(0xFF1D224E),
               ],
-              begin: FractionalOffset(0.0, 0.0),
-              end: FractionalOffset(0.0, 1.0),
+              stops: [0.0, 1.0],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
           child: Row(
@@ -226,16 +233,16 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     padding: const EdgeInsets.fromLTRB(8.0, 16, 0, 0),
                     child: Text(
                       temperature,
-                      style: const TextStyle(
+                      style:  GoogleFonts.poppins(
                         fontSize: 45,
                         color: AppColors.textColor,
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                   Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
                     child: Text("United Kingdom\nLondon",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             color: AppColors.textColor,
                             fontSize: 12,
                             fontWeight: FontWeight.bold)),
@@ -249,16 +256,16 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                   children: [
                     Text(
                       date,
-                      style: const TextStyle(
+                      style:  GoogleFonts.poppins(
                           color: AppColors.textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    const Expanded(
+                     Expanded(
                         child: Text(
                       "⛅ Light rain|Remember \nto carry a light jacket",
                       style:
-                          TextStyle(color: AppColors.textColor, fontSize: 11),
+                      GoogleFonts.poppins(color: AppColors.textColor, fontSize: 11),
                     ))
                   ],
                 ),
@@ -270,7 +277,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
         Container(
           child: Image.asset("assets/images/banner.png"),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Container(
             height: 350,
             decoration: BoxDecoration(
@@ -281,12 +288,12 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               children: [
                 Text(
                   "Campus Service",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: AppColors.blackColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -296,10 +303,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Busservice()));
+                          Navigator.pushNamed(context, Routes.busService);
                           },
                           child: Stack(
                             alignment: Alignment.center,
@@ -311,7 +315,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
                                   "Bus Service",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 12.sp,
                                   ),
@@ -320,10 +324,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
-                            // Handle tap on campus tour image
+                            Navigator.pushNamed(context, Routes.tours);
                           },
                           child: Stack(
                             alignment: Alignment.center,
@@ -331,11 +335,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                               Image.asset(
                                 "assets/images/dash2.png",
                               ),
-                              const Align(
+                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
                                   "Campus Tour",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 12,
                                   ),
@@ -344,7 +348,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             // Handle tap on attendance image
@@ -355,11 +359,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                               Image.asset(
                                 "assets/images/dash4.png",
                               ),
-                              const Align(
+                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
                                   "Accomodation",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 12,
                                   ),
@@ -372,10 +376,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                const Text(
+                const SizedBox(height: 10),
+                 Text(
                   "Social & Extracuricular",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: AppColors.blackColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
@@ -389,11 +393,11 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                       Image.asset(
                         "assets/images/cam2.png",
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Image.asset(
                         "assets/images/cam1.png",
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Image.asset(
                         "assets/images/camp4.png",
                       ),
@@ -402,21 +406,29 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                 ))
               ],
             )),
-        const Text(
-          "Nearest Eateries",
-          style: TextStyle(
-              color: AppColors.blackColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 18),
+        const SizedBox(height: 16,),
+        CustomText(
+          inputText: 'Nearest Eateries',
+          textAlign: TextAlign.start,
+          fontSize: 15,
+          weight: FontWeight.w600,
+          color: AppColors.blackColor,
         ),
+
+        const SizedBox(
+          height: 230,
+          child: EateriesTile(),
+        ),
+        const SizedBox(height: 16,),
+
         Container(
           decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
           child: ListTile(
-            leading: const Text(
+            leading:  Text(
               "Library Support",
-              style: TextStyle(color: AppColors.textColor, fontSize: 18),
+              style: GoogleFonts.poppins(color: AppColors.textColor, fontSize: 18),
             ),
             trailing: IconButton(
               onPressed: () {
@@ -438,9 +450,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
           child: ListTile(
-            leading: const Text(
+            leading:  Text(
               "View My Attendance",
-              style: TextStyle(color: AppColors.textColor, fontSize: 18),
+              style: GoogleFonts.poppins(color: AppColors.textColor, fontSize: 18),
             ),
             trailing: IconButton(
               onPressed: () {

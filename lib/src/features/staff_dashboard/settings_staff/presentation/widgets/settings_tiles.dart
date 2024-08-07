@@ -26,11 +26,11 @@ class SettingsButtons extends StatelessWidget {
       isDissmisable: false,
       child: LogOut(
         onConfirmLogout: () {
-          Navigator.of(context).pop(); // Close the dialog
-          onLogout(); // Call the logout function
+          Navigator.of(context).pop();
+          onLogout();
         },
         onCancel: () {
-          Navigator.of(context).pop(); // Close the dialog
+          Navigator.of(context).pop();
         },
       ),
     );
@@ -52,7 +52,7 @@ class SettingsButtons extends StatelessWidget {
             ),
             child: Center(
               child: CustomText(
-                inputText: 'Cancel',
+                inputText: 'Log out',
                 fontSize: 16,
                 weight: FontWeight.w400,
                 color: AppColors.redColor,

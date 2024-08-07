@@ -56,7 +56,8 @@ class _SettingsStaffState extends State<SettingsStaff> {
             _fullName.text = doc['name'] ?? 'New User';
             _phone.text = doc['phone_num'] ?? '';
             _email.text = doc['email'] ?? '';
-            _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
+            _profilePicUrl = doc['profilePicture'] ??
+                'https://path-to-your-default-image.jpg';
             _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
             _schoolId = doc['SCHOOLID'] ?? '000011111';
           });
@@ -117,7 +118,8 @@ class _SettingsStaffState extends State<SettingsStaff> {
       if (image != null) {
         File file = File(image.path);
         String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-        Reference storageRef = FirebaseStorage.instance.ref().child('profilePicture/$fileName');
+        Reference storageRef =
+            FirebaseStorage.instance.ref().child('profilePicture/$fileName');
 
         try {
           UploadTask uploadTask = storageRef.putFile(file);
@@ -155,6 +157,23 @@ class _SettingsStaffState extends State<SettingsStaff> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.scaffoldBackground,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            const Icon(Icons.arrow_back,),
+            SizedBox(width: 91.w,),
+            CustomText(
+              inputText: 'Settings',
+              fontSize: 24,
+              weight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -163,7 +182,12 @@ class _SettingsStaffState extends State<SettingsStaff> {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: Text("Loading.....", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey.shade200),));
+            return Center(
+                child: Text(
+              "Loading.....",
+              style: TextStyle(
+                  fontWeight: FontWeight.w300, color: Colors.grey.shade200),
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || !snapshot.data!.exists) {
@@ -172,22 +196,10 @@ class _SettingsStaffState extends State<SettingsStaff> {
             final data = snapshot.data!.data() as Map<String, dynamic>;
 
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(11.w, 51.h, 11.w, 11.h),
+              padding: EdgeInsets.fromLTRB(11.w, 20.h, 11.w, 11.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 91.w),
-                      CustomText(
-                        inputText: 'Settings',
-                        fontSize: 24,
-                        weight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 18.h),
                   SettingsCard(
                     profilePicUrl: _profilePicUrl,
                     onProfilePicTap: _updateProfilePic,
@@ -324,31 +336,33 @@ class SettingsCard extends StatelessWidget {
                 onTap: onProfilePicTap,
                 child: profilePicUrl != null && profilePicUrl!.isNotEmpty
                     ? ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                  child: Image.network(
-                    profilePicUrl!,
-                    height: 80.h,
-                    width: 80.w,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
-                        child: Image.asset(
-                          'assets/images/Ellipse 255.png',
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(50)),
+                        child: Image.network(
+                          profilePicUrl!,
                           height: 80.h,
                           width: 80.w,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: Image.asset(
+                                'assets/images/Ellipse 255.png',
+                                height: 80.h,
+                                width: 80.w,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                )
+                      )
                     : Image.asset(
-                  'assets/images/Ellipse 255.png',
-                  height: 80.h,
-                  width: 80.w,
-                  fit: BoxFit.cover,
-                ),
+                        'assets/images/Ellipse 255.png',
+                        height: 80.h,
+                        width: 80.w,
+                        fit: BoxFit.cover,
+                      ),
               ),
               Positioned(
                 bottom: 8.h,
