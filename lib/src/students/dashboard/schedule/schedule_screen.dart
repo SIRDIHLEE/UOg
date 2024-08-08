@@ -14,7 +14,7 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  String _selectedDate = '10';
+  String _selectedDate = '14';
   String _selectedDay = 'Wed';
   String date = '';
   bool showToday = true;
@@ -28,7 +28,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   final Map<String, List<Map<String, String>>> _scheduleData = {
-    '10': [
+    '12': [
       {
         'title': 'COMP 1833',
         'subject': 'Software Quality Management',
@@ -36,7 +36,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         'instructor': 'Rowen Wright',
       },
     ],
-    '11': [
+    '14': [
+      {
+        'title': 'COMP 1833',
+        'subject': 'Software Quality Management',
+        'location': 'Stockwell Academic, Greenwich Lecture',
+        'instructor': 'Rowen Wright',
+      },
+    ],
+    '13': [
       {
         'title': 'COMP 1834',
         'subject': 'Advanced Databases',
@@ -44,7 +52,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         'instructor': 'Jane Doe',
       },
     ],
-    '8': [
+    '15': [
       {
         'title': 'COMP 1834',
         'subject': 'Advanced Databases',
@@ -91,7 +99,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             weight: FontWeight.w500,
                             color: Colors.black.withOpacity(0.50)),
                         CustomText(
-                            inputText: 'July 2024',
+                            inputText: 'August 2024',
                             fontSize: 16,
                             weight: FontWeight.w500,
                             color: Colors.black.withOpacity(0.50)),
@@ -114,45 +122,45 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   children: [
                     DateTile(
                       title: 'Mon',
-                      date: '8',
-                      isSelected: _selectedDate == '8',
-                      onTap: () => _onDateSelected('8', 'Mon'),
+                      date: '12',
+                      isSelected: _selectedDate == '12',
+                      onTap: () => _onDateSelected('12', 'Mon'),
                     ),
                     DateTile(
                       title: 'Tue',
-                      date: '9',
-                      isSelected: _selectedDate == '9',
-                      onTap: () => _onDateSelected('9', 'Tue'),
+                      date: '13',
+                      isSelected: _selectedDate == '13',
+                      onTap: () => _onDateSelected('13', 'Tue'),
                     ),
                     DateTile(
                       title: 'Wed',
-                      date: '10',
-                      isSelected: _selectedDate == '10',
-                      onTap: () => _onDateSelected('10', 'Wed'),
+                      date: '14',
+                      isSelected: _selectedDate == '14',
+                      onTap: () => _onDateSelected('14', 'Wed'),
                     ),
                     DateTile(
                       title: 'Thu',
-                      date: '11',
-                      isSelected: _selectedDate == '11',
-                      onTap: () => _onDateSelected('11', 'Thu'),
+                      date: '15',
+                      isSelected: _selectedDate == '15',
+                      onTap: () => _onDateSelected('15', 'Thu'),
                     ),
                     DateTile(
                       title: 'Fri',
-                      date: '12',
-                      isSelected: _selectedDate == '12',
-                      onTap: () => _onDateSelected('12', 'Fri'),
+                      date: '16',
+                      isSelected: _selectedDate == '16',
+                      onTap: () => _onDateSelected('16', 'Fri'),
                     ),
                     DateTile(
                       title: 'Sat',
-                      date: '13',
-                      isSelected: _selectedDate == '13',
-                      onTap: () => _onDateSelected('13', 'Sat'),
+                      date: '17',
+                      isSelected: _selectedDate == '17',
+                      onTap: () => _onDateSelected('17', 'Sat'),
                     ),
                     DateTile(
                       title: 'Sun',
-                      date: '14',
-                      isSelected: _selectedDate == '14',
-                      onTap: () => _onDateSelected('14', 'Sun'),
+                      date: '18',
+                      isSelected: _selectedDate == '18',
+                      onTap: () => _onDateSelected('18', 'Sun'),
                     ),
                   ],
                 ),
