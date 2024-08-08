@@ -212,9 +212,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     return ListView(
       children: [
         Container(
-          height: 150,
+          // height: 119.h,
+          width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
             gradient: const LinearGradient(
               colors: [
                 Color(0xFF000000),
@@ -225,54 +226,47 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: Row(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 16, 0, 0),
-                    child: Text(
-                      temperature,
-                      style:  GoogleFonts.poppins(
-                        fontSize: 45,
-                        color: AppColors.textColor,
-                      ),
-                    ),
-                  ),
-                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-                    child: Text("United Kingdom\nLondon",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.textColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 30),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
-                child: Column(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      date,
-                      style:  GoogleFonts.poppins(
-                          color: AppColors.textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                     Expanded(
-                        child: Text(
-                      "⛅ Light rain|Remember \nto carry a light jacket",
-                      style:
-                      GoogleFonts.poppins(color: AppColors.textColor, fontSize: 11),
-                    ))
+                    CustomText(
+                        inputText: temperature,
+                        fontSize: 72,
+                        weight: FontWeight.w600,
+                        color: Colors.white),
+                    CustomText(
+                        inputText: 'United kingdom|london',
+                        fontSize: 12,
+                        weight: FontWeight.w500,
+                        color: Colors.white),
                   ],
                 ),
-              )
-            ],
+                SizedBox(width: 20.w,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                          inputText: date,
+                          fontSize: 16,
+                          weight: FontWeight.w700,
+                          color: Colors.white),
+                      CustomText(
+                          inputText:
+                          '⛅ Light rain|Remember to carry a light jacket',
+                          fontSize: 12,
+                          weight: FontWeight.w500,
+                          color: Colors.white),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
