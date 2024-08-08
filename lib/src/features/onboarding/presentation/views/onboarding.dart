@@ -49,11 +49,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [GestureDetector(
                   onTap: (){
-                    _controller1.animateToPage(
-                      demo_data.length - 1, // last index
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                    );
+                    Navigator.pushNamed(context, Routes.signIn);
                   },
                     child: CustomText(
                       inputText: "Skip",

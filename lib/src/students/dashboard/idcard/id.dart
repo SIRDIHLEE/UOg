@@ -14,7 +14,6 @@ class IdCardScreen extends StatefulWidget {
 }
 
 class _IdCardScreenState extends State<IdCardScreen> {
-  // Fetch user data from Firestore
   Future<DocumentSnapshot<Map<String, dynamic>>> _fetchUserData() async {
     final userId =
         FirebaseAuth.instance.currentUser?.uid; // Get the current user ID

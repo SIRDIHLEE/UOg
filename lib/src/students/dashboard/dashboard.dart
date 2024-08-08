@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/constant/route.dart';
-import 'package:uog/src/features/busservice/busservice.dart';
 import 'package:uog/src/features/staff_dashboard/staff_dashboard.dart';
 import 'package:uog/src/students/dashboard/student_attendance/student_attendance.dart';
 import 'package:uog/src/students/dashboard/student_profile/presentation/student_profile.dart';
@@ -18,6 +17,7 @@ import '../../common/custom_text.dart';
 import '../../features/staff_dashboard/home_staff/presentation/widgets/service_tile.dart';
 import 'library/library.dart';
 import 'module/module.dart';
+import 'notification/notifications.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -121,7 +121,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const NotificationsScreen()));
+                    },
                   child: Image.asset(
                     "assets/images/noti.png",
                     color: Colors.black,
