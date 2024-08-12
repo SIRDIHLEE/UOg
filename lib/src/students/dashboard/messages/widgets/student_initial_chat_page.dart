@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uog/src/students/dashboard/messages/widgets/student_new_message_screen.dart';
 
-
 class StudentInitialChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,9 +10,13 @@ class StudentInitialChatPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(onPressed: (){_showNewMessageSheet(context);}, icon: const Icon(Icons.mail),)
-          )
+              padding: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                onPressed: () {
+                  _showNewMessageSheet(context);
+                },
+                icon: const Icon(Icons.mail),
+              ))
         ],
       ),
       body: Center(
@@ -28,7 +31,8 @@ class StudentInitialChatPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const Text(
-                'You can view and reply to messages from here', style: TextStyle(fontSize: 12),
+                'You can view and reply to messages from here',
+                style: TextStyle(fontSize: 12),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -37,9 +41,14 @@ class StudentInitialChatPage extends StatelessWidget {
                   _showNewMessageSheet(context);
                 },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF132238)),
+                  // backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF132238)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(const Color(0xFF132238)),
                 ),
-                child: const Text('New Message', style: TextStyle(color: Colors.white),),
+                child: const Text(
+                  'New Message',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
