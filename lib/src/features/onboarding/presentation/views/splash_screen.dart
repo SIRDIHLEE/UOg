@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uog/src/constant/colors.dart';
 
 import '../../../../constant/route.dart';
@@ -19,28 +18,27 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
         const Duration(seconds: 3),
-            () =>
-        //Navigator.pushReplacementNamed(context, Routes.nav)
-        Navigator.pushReplacementNamed(
-            context, Routes.onboarding)
-    );
+        () =>
+            //Navigator.pushReplacementNamed(context, Routes.nav)
+            Navigator.pushReplacementNamed(context, Routes.onboarding));
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/logo.png',alignment: Alignment.center,),
-
-
+            Image.asset(
+              'assets/images/logo.png',
+              alignment: Alignment.center,
+            ),
           ],
         ),
       ),
-
     );
   }
 }
