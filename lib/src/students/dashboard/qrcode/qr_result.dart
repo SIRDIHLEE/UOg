@@ -42,7 +42,7 @@ class _QRResultState extends State<QRResult> {
             _studentId = doc['SCHOOLID'] as String?;
           });
         } else {
-          print("No such document");
+          // print("No such document");
         }
       } catch (e) {
         print("Error fetching student details: $e");

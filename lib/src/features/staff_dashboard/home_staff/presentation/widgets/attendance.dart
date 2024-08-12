@@ -69,7 +69,6 @@ class _AttendanceState extends State<Attendance> {
                 .collection('attendance')
                 .doc(formattedDate)
                 .collection('students')
-                .where('date', isEqualTo: formattedDate)
                 .orderBy('timestamp', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
@@ -105,7 +104,7 @@ class _AttendanceState extends State<Attendance> {
                   final data = documents[index].data() as Map<String, dynamic>;
                   final name = data['name'] ?? 'N/A';
                   final studentId = data['id'] ?? 'N/A';
-                  final status = data['status'] ?? 'Absent'; // Assuming 'status' is a field
+                  final status = data['status'] ?? 'Absent';
 
                   return ListTile(
                     subtitle: Row(
@@ -121,7 +120,7 @@ class _AttendanceState extends State<Attendance> {
               );
             },
           ),
-        ),
+        )
       ],
     );
   }
