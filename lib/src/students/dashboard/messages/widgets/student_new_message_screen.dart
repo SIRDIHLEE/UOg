@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/students/dashboard/messages/widgets/student_chat_page.dart';
 
 class StudentNewMessageSheet extends StatefulWidget {
@@ -53,19 +56,23 @@ class _StudentNewMessageSheetState extends State<StudentNewMessageSheet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: Text('Messages'),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: Text('Messages',style: GoogleFonts.poppins(),),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(16.sp),
               child: TextField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Search users...',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -92,10 +99,10 @@ class _StudentNewMessageSheetState extends State<StudentNewMessageSheet> {
                 return Column(
                   children: filteredUsers.map((user) {
                     return ListTile(
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         backgroundImage: AssetImage('assets/images/unsplash.png'), // Hardcoded profile picture
                       ),
-                      title: Text(user['name']),
+                      title: Text(user['name'],style: GoogleFonts.poppins(),),
                       onTap: () async {
                         // Create chatroom if it doesn't exist
                         await _createChatroomIfNotExists(user.id);

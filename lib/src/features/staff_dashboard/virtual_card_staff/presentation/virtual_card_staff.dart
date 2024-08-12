@@ -42,88 +42,90 @@ class _VirtualCardStaffState extends State<VirtualCardStaff> {
             final name = userData['name'] ?? 'New user. Please update your profile';
             final profilePicture = userData['profilePicture'] ?? '';
             final schoolId = userData['SCHOOLID'] ?? '000001111';
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/VIRTUAL_ID page (1).png'),
-                  fit: BoxFit.cover,
+            return SafeArea(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/VIRTUAL_ID page (1).png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 135.h),
-                  profilePicture.isNotEmpty
-                      ? ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(100)),
-                        child: Image.network(
-                                            profilePicture,
-                                            height: 120.h,
-                                            width: 120.w,
-                                            fit: BoxFit.cover,
-                                          ),
-                      )
-                      : ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(100)),
-                        child: Image.asset(
-                                            'assets/images/Ellipse 255.png',
-                                            height: 120.h,
-                                            width: 120.w,
-                                            fit: BoxFit.cover,
-                                          ),
-                      ),
-                  SizedBox(height: 85.h),
-                  CustomText(
-                    inputText: name,
-                    textAlign: TextAlign.start,
-                    fontSize: 24,
-                    weight: FontWeight.w700,
-                    color: AppColors.blackColor,
-                  ),
-                  SizedBox(height: 11.h),
-                  CustomText(
-                    inputText: 'Staff',
-                    textAlign: TextAlign.start,
-                    fontSize: 11,
-                    weight: FontWeight.w600,
-                    color: AppColors.blackColor,
-                  ),
-                  SizedBox(height: 28.h),
-                  CustomText(
-                    inputText: 'ID No: $schoolId',
-                    textAlign: TextAlign.start,
-                    fontSize: 15,
-                    weight: FontWeight.w500,
-                    color: AppColors.blackColor,
-                  ),
-                  SizedBox(height: 11.h),
-                  CustomText(
-                    inputText: 'Department: Science & Engineering',
-                    textAlign: TextAlign.start,
-                    fontSize: 15,
-                    weight: FontWeight.w500,
-                    color: AppColors.blackColor,
-                  ),
-                  SizedBox(height: 11.h),
-                  CustomText(
-                    inputText: 'Institution: University of Greenwich',
-                    textAlign: TextAlign.start,
-                    fontSize: 15,
-                    weight: FontWeight.w500,
-                    color: AppColors.blackColor,
-                  ),
-                  SizedBox(height: 68.h),
-                  Container(
-                    height: 69.h,
-                    width: 287.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.r),
+                child: Column(
+                  children: [
+                    SizedBox(height: 135.h),
+                    profilePicture.isNotEmpty
+                        ? ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          child: Image.network(
+                                              profilePicture,
+                                              height: 120.h,
+                                              width: 120.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                        )
+                        : ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          child: Image.asset(
+                                              'assets/images/Ellipse 255.png',
+                                              height: 120.h,
+                                              width: 120.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                        ),
+                    SizedBox(height: 85.h),
+                    CustomText(
+                      inputText: name,
+                      textAlign: TextAlign.start,
+                      fontSize: 24,
+                      weight: FontWeight.w700,
+                      color: AppColors.blackColor,
                     ),
-                    child: Image.asset('assets/images/Group 50.png'),
-                  ),
-                ],
+                    SizedBox(height: 11.h),
+                    CustomText(
+                      inputText: 'Staff',
+                      textAlign: TextAlign.start,
+                      fontSize: 11,
+                      weight: FontWeight.w600,
+                      color: AppColors.blackColor,
+                    ),
+                    SizedBox(height: 28.h),
+                    CustomText(
+                      inputText: 'ID No: $schoolId',
+                      textAlign: TextAlign.start,
+                      fontSize: 15,
+                      weight: FontWeight.w500,
+                      color: AppColors.blackColor,
+                    ),
+                    SizedBox(height: 11.h),
+                    CustomText(
+                      inputText: 'Department: Science & Engineering',
+                      textAlign: TextAlign.start,
+                      fontSize: 15,
+                      weight: FontWeight.w500,
+                      color: AppColors.blackColor,
+                    ),
+                    SizedBox(height: 11.h),
+                    CustomText(
+                      inputText: 'Institution: University of Greenwich',
+                      textAlign: TextAlign.start,
+                      fontSize: 15,
+                      weight: FontWeight.w500,
+                      color: AppColors.blackColor,
+                    ),
+                    SizedBox(height: 68.h),
+                    Container(
+                      height: 69.h,
+                      width: 287.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Image.asset('assets/images/Group 50.png'),
+                    ),
+                  ],
+                ),
               ),
             );
           }

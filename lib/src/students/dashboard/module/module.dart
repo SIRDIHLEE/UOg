@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/students/dashboard/module/module_Item.dart';
 
@@ -8,6 +9,7 @@ class ModuleOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       // appBar: AppBar(
       //   title: Padding(
       //     padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
@@ -40,39 +42,39 @@ class ModuleOverviewScreen extends StatelessWidget {
           children: [
             Text(
               "Module Overview",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                   color: AppColors.primaryColor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            ModuleItem(
+            const ModuleItem(
                 title: "COMP-1252-MO3-2023-24",
                 text:
                     "School of Computing & Mathematical Sciences\n 2023-24(Greenwich Maritime Campus)",
                 course: "Course: project"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            ModuleItem(
+            const ModuleItem(
                 title: "COMP-1430-MO1-2023-24",
                 text:
                     "School of Computing & Mathematical Sciences\n 2023-24(Greenwich Maritime Campus)",
                 course: "Course: System Design amd Development"),
-                 SizedBox(
+                 const SizedBox(
               height: 10,
             ),
-            ModuleItem(
+            const ModuleItem(
                 title: "COMP-1430-MO1-2023-24",
                 text:
                     "School of Computing & Mathematical Sciences\n 2023-24(Greenwich Maritime Campus)",
                 course: "Course: Mobile Application Development"),
-                 SizedBox(
+                 const SizedBox(
               height: 10,
             ),
-            ModuleItem(
+            const ModuleItem(
                 title: "COMP-1436-MO3-2023-24",
                 text:
                     "School of Computing & Mathematical Sciences\n 2023-24(Greenwich Maritime Campus)",

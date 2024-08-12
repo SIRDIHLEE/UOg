@@ -47,14 +47,18 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
               SizedBox(height: 30.h,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomText(
-                    inputText: "Skip",
-                    textAlign: TextAlign.center,
-                    fontSize: 14,
-                    weight: FontWeight.normal,
-                    color: AppColors.blackColor,
-                    fontFamily: '',
+                children: [GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, Routes.signIn);
+                  },
+                    child: CustomText(
+                      inputText: "Skip",
+                      textAlign: TextAlign.center,
+                      fontSize: 14,
+                      weight: FontWeight.normal,
+                      color: AppColors.blackColor,
+                      fontFamily: '',
+                    ),
                   ),
                 ],
               ),

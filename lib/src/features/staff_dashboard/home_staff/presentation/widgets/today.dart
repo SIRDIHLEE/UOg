@@ -33,7 +33,6 @@ class _TodayState extends State<Today> {
   Future<void> fetchWeatherData() async {
     final response = await http.get(Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=$apiKey'));
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -79,54 +78,43 @@ class _TodayState extends State<Today> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CustomText(
-                                inputText: temperature,
-                                fontSize: 45,
-                                weight: FontWeight.w600,
-                                color: Colors.white),
-                            // CustomText(
-                            //     inputText: '\u2103',
-                            //     fontSize: 48,
-                            //     weight: FontWeight.w500,
-                            //     color: Colors.white),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 26.w,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                  inputText: date,
-                                  fontSize: 16,
-                                  weight: FontWeight.w700,
-                                  color: Colors.white),
-                              CustomText(
-                                  inputText:
-                                      '⛅ Light rain|Remember to carry a light jacket',
-                                  fontSize: 12,
-                                  weight: FontWeight.w500,
-                                  color: Colors.white),
-                            ],
-                          ),
-                        ),
+                        CustomText(
+                            inputText: temperature,
+                            fontSize: 72,
+                            weight: FontWeight.w600,
+                            color: Colors.white),
+                        CustomText(
+                            inputText: 'United kingdom|london',
+                            fontSize: 12,
+                            weight: FontWeight.w500,
+                            color: Colors.white),
                       ],
                     ),
-                    CustomText(
-                        inputText: 'United kingdom|london',
-                        fontSize: 12,
-                        weight: FontWeight.w500,
-                        color: Colors.white),
+                    SizedBox(width: 20.w,),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                              inputText: date,
+                              fontSize: 16,
+                              weight: FontWeight.w700,
+                              color: Colors.white),
+                          CustomText(
+                              inputText:
+                              '⛅ Light rain|Remember to carry a light jacket',
+                              fontSize: 12,
+                              weight: FontWeight.w500,
+                              color: Colors.white),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -193,7 +181,7 @@ class _TodayState extends State<Today> {
                       color: AppColors.blackColor,
                     ),
                     SizedBox(height: 16.h,),
-                    const ServiceTile(),
+                    const CreativeTile(),
                   ],
                 ),
               ),

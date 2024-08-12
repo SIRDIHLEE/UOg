@@ -4,7 +4,6 @@ import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/constant/route.dart';
 
 import '../../../../../common/custom_text.dart';
-import '../../../../virtualtours/virtual_tours.dart';
 
 class Discover extends StatefulWidget {
   const Discover({super.key});

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,20 +34,31 @@ class _CareerScreenState extends State<CareerScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-                children: [
-              Image.asset("assets/images/image 21.png"),
-              Padding(
-                padding: EdgeInsets.only(top: 210.0.h, right: 8.w, left: 8.w,),
-                child: CustomText(
-                  inputText: 'Welcome from Professor Jane\nHarrington, the Vice-Chancellor',
-                  textAlign: TextAlign.start,
-                  fontSize: 14,
-                  weight: FontWeight.w600,
-                  color: AppColors.scaffoldBackground,
+            Container(
+              height: 240.h,
+            width: double.maxFinite,
+            decoration:  BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(image: AssetImage('assets/images/image 21.png'),fit: BoxFit.cover),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.all(12.0.sp),
+                  child: CustomText(
+                    inputText: 'Welcome from Professor Jane\nHarrington, the Vice-Chancellor',
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    weight: FontWeight.w600,
+                    color: AppColors.scaffoldBackground,
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
+            ),
+
             SizedBox(height: 10.h,),
 
 

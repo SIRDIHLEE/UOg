@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 
 import 'new_message_sheet.dart';
 
@@ -6,8 +8,13 @@ class InitialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: const Text("Messages"),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: Text(
+          "Messages",
+          style: GoogleFonts.poppins(),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           Padding(
@@ -24,9 +31,10 @@ class InitialPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Start Conversation',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(
+                  fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -43,9 +51,9 @@ class InitialPage extends StatelessWidget {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(const Color(0xFF132238)),
               ),
-              child: const Text(
+              child: Text(
                 'New Message',
-                style: TextStyle(color: Colors.white),
+                style: GoogleFonts.poppins(color: Colors.white),
               ),
             ),
           ],

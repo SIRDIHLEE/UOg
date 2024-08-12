@@ -31,11 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppColors.scaffoldBackground,
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 343.h,),
             Image.asset('assets/images/logo.png',alignment: Alignment.center,),
-            SizedBox(height: 185.h,),
-            Image.asset('assets/images/logo2.png'),
+
 
           ],
         ),

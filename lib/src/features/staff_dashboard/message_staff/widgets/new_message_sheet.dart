@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 import 'chat_page.dart';
 
 class NewMessageSheet extends StatefulWidget {
@@ -53,19 +55,23 @@ class _NewMessageSheetState extends State<NewMessageSheet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: Text('Messages'),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: Text('Messages', style:  GoogleFonts.poppins(),),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: TextField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Search users...',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20)
+                  ),
                 ),
                 onChanged: (value) {
                   setState(() {

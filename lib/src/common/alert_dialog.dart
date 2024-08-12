@@ -9,6 +9,7 @@ class CustomAlertDialog {
     required Widget child,
     bool isDissmisable = true,
     double? height,
+    double? width,
   }) {
     showDialog(
       context: context,
@@ -20,7 +21,7 @@ class CustomAlertDialog {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              width: 245.w,
+              width: width??245.w,
               height: height ?? 510.h,
               color: AppColors.scaffoldBackground,
               // padding: EdgeInsets.only(

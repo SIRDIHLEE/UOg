@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uog/src/constant/colors.dart';
 import 'package:uog/src/students/dashboard/dashboard.dart';
 import 'package:uog/src/students/dashboard/messages/widgets/student_new_message_screen.dart';
 import 'package:uog/src/students/dashboard/student-dashboard.dart';
@@ -54,8 +58,10 @@ class _StudentChatPageState extends State<StudentChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
-        title: Text(widget.user['name'] ?? 'Unknown User'),
+        backgroundColor: AppColors.scaffoldBackground,
+        title: Text(widget.user['name'] ?? 'Unknown User',style: GoogleFonts.poppins(),),
         leading: GestureDetector(
           onTap: (){
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> StudentNewMessageSheet()));
@@ -75,7 +81,7 @@ class _StudentChatPageState extends State<StudentChatPage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final messages = snapshot.data!.docs;
 
@@ -88,14 +94,14 @@ class _StudentChatPageState extends State<StudentChatPage> {
                       title: Align(
                         alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             color: isCurrentUser ? Colors.blue : Colors.grey[300],
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             message['message'],
-                            style: TextStyle(color: isCurrentUser ? Colors.white : Colors.black),
+                            style: GoogleFonts.poppins(color: isCurrentUser ? Colors.white : Colors.black),
                           ),
                         ),
                       ),
@@ -106,22 +112,24 @@ class _StudentChatPageState extends State<StudentChatPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.only(bottom: 20.h,left: 10.w),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       hintText: 'Type a message...',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.r)
+                      ),
                     ),
                     minLines: 1,
                     maxLines: null,
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: _sendMessage,
                 ),
               ],

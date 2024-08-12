@@ -84,8 +84,6 @@ class _HomeState extends State<Home> {
      const GuestTile(image: 'assets/images/Rectangle.png',),
      const GuestTile(image: 'assets/images/download 2.png',),
      const GuestTile(image: 'assets/images/image 13.png',),
-
-
   ];
   @override
   Widget build(BuildContext context) {
