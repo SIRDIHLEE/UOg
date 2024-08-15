@@ -13,6 +13,8 @@ import 'package:uog/src/features/staff_dashboard/settings_staff/presentation/wid
 import '../../../../../common/alert_dialog.dart';
 import '../../../../../common/custom_text.dart';
 import '../../../../../common/custom_textfield.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class StudentSettings extends StatefulWidget {
@@ -30,6 +32,9 @@ class _StudentSettingsState extends State<StudentSettings> {
   bool switchValue1 = false;
   bool _isObscured = true;
   String? _profilePicUrl;// Default school ID
+  String? _tempProfilePicUrl;
+  String _displayName = 'New User'; // Default name
+  String _schoolId = '000011111'; // Default school ID
 
   @override
   void initState() {
@@ -53,6 +58,8 @@ class _StudentSettingsState extends State<StudentSettings> {
             _phone.text = doc['phone_num'] ?? '';
             _email.text = doc['email'] ?? '';
             _profilePicUrl = doc['profilePicture'] ?? 'https://path-to-your-default-image.jpg';
+            _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
+            _schoolId = doc['SCHOOLID'] ?? '000011111';
           });
         }
       } catch (e) {
@@ -75,10 +82,13 @@ class _StudentSettingsState extends State<StudentSettings> {
           'name': _fullName.text,
           'phone_num': _phone.text,
           'email': _email.text,
-          'profilePicture': _profilePicUrl,
+          'profilePicture': _profilePicUrl, // Save the updated URL
         }, SetOptions(merge: true));
 
         // Update the local state to reflect the changes
+        setState(() {
+          _displayName = _fullName.text.isEmpty ? 'New User' : _fullName.text;
+        });
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile updated successfully')),
@@ -95,6 +105,47 @@ class _StudentSettingsState extends State<StudentSettings> {
     }
   }
 
+  Future<void> _updateProfilePic() async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        File file = File(image.path);
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+        Reference storageRef = FirebaseStorage.instance.ref().child('profilePicture/$fileName');
+
+        try {
+          UploadTask uploadTask = storageRef.putFile(file);
+
+          uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+            // Optional: monitor upload progress
+          });
+
+          TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+          String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+          setState(() {
+            _tempProfilePicUrl = downloadUrl;
+            _profilePicUrl = downloadUrl;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Profile picture ready to be saved')),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error updating profile picture: $e')),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Permission denied')),
+      );
+    }
+  }
 
   // void _onLogout() {
   //   FirebaseAuth.instance.signOut();

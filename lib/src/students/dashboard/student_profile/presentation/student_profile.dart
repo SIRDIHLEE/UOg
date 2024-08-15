@@ -76,7 +76,7 @@ class _StudentProfileState extends State<StudentProfile> {
       try {
         await docRef.set({
           'name': _fullName.text,
-          'profilePicture': _profilePicUrl,
+          'profilePicture': _profilePicUrl, // Save the updated URL
         }, SetOptions(merge: true));
 
         // Update the local state to reflect the changes
@@ -99,6 +99,49 @@ class _StudentProfileState extends State<StudentProfile> {
     }
   }
 
+  Future<void> _updateProfilePic() async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        File file = File(image.path);
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+        Reference storageRef = FirebaseStorage.instance.ref().child('profilePicture/$fileName');
+
+        try {
+          UploadTask uploadTask = storageRef.putFile(file);
+
+          uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+            // Optional: monitor upload progress
+          });
+
+          TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+          String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+          setState(() {
+            _profilePicUrl = downloadUrl;
+          });
+
+          // Automatically save changes after updating the profile picture
+          await _saveChanges();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Profile picture updated and saved successfully')),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error updating profile picture: $e')),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Permission denied')),
+      );
+    }
+  }
 
   void _onLogout() {
     FirebaseAuth.instance.signOut();
@@ -128,10 +171,10 @@ class _StudentProfileState extends State<StudentProfile> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("Profile", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),),
+        title: Text("Profile", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600)),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined, size: 32.w,),
+          icon: Icon(Icons.arrow_back_outlined, size: 32.w),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -140,49 +183,51 @@ class _StudentProfileState extends State<StudentProfile> {
         child: Center(
           child: Column(
             children: [
-              Text("Edit", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),),
-                  SizedBox(height: 12.h,),
+              Text("Edit", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400)),
+              SizedBox(height: 12.h),
               SettingsCard(
                 profilePicUrl: _profilePicUrl,
                 displayName: _displayName,
-                onProfilePicTap: (){},
+                onProfilePicTap: () {
+                  _updateProfilePic();
+                },
                 schoolId: _schoolId,
               ),
               SizedBox(height: 104.h),
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFF364E68),
-                  borderRadius: BorderRadius.circular(10.r)
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Column(
                   children: [
                     ListTile(
-                        title: Text("Push Notifications", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
-                        leading: Icon(Icons.notifications_none, color: Colors.white, size: 20.06.h,),
-                        trailing: Transform.scale(
-                          scale: 0.75,
-                          child: CupertinoSwitch(
-                            value: switchValue1,
-                            activeColor: Colors.white,
-                            thumbColor: Colors.white,
-                            trackColor: Colors.white,
-                            onChanged: (bool value) {
-                              setState(() {
-                                switchValue1 = value;
-                              });
-                            },
-                          ),
+                      title: Text("Push Notifications", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)),
+                      leading: Icon(Icons.notifications_none, color: Colors.white, size: 20.06.h),
+                      trailing: Transform.scale(
+                        scale: 0.75,
+                        child: CupertinoSwitch(
+                          value: switchValue1,
+                          activeColor: Colors.white,
+                          thumbColor: Colors.white,
+                          trackColor: Colors.white,
+                          onChanged: (bool value) {
+                            setState(() {
+                              switchValue1 = value;
+                            });
+                          },
                         ),
+                      ),
                     ),
                     ListTile(
-                      title: Text("Settings", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
-                      leading: Icon(Icons.settings, color: Colors.white, size: 20.06.h,),
+                      title: Text("Settings", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)),
+                      leading: Icon(Icons.settings, color: Colors.white, size: 20.06.h),
                       trailing: IconButton(
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentSettings()));
                         },
-                        icon: Icon(Icons.chevron_right, color: Colors.white, size: 32.w,),
-                      )
+                        icon: Icon(Icons.chevron_right, color: Colors.white, size: 32.w),
+                      ),
                     ),
                   ],
                 ),
@@ -190,21 +235,24 @@ class _StudentProfileState extends State<StudentProfile> {
               SizedBox(height: 180.h),
               Container(
                 decoration: BoxDecoration(
-                    color: const Color(0xFF364E68),
-                    borderRadius: BorderRadius.circular(10.r)
+                  color: const Color(0xFF364E68),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Column(
                   children: [
                     ListTile(
-                        title: Text("Help & Support", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                      title: Text("Help & Support", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)),
                     ),
                     ListTile(
-                      title: Text("FAQ", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),),
+                      title: Text("FAQ", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)),
                     ),
                     ListTile(
                       title: GestureDetector(
-                          onTap: (){_showLogoutDialog(context);},
-                          child: Text("Logout", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500),)),
+                        onTap: () {
+                          _showLogoutDialog(context);
+                        },
+                        child: Text("Logout", style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w500)),
+                      ),
                     ),
                   ],
                 ),

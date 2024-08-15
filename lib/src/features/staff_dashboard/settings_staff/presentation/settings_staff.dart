@@ -81,7 +81,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
           'name': _fullName.text,
           'phone_num': _phone.text,
           'email': _email.text,
-          'profilePicture': _profilePicUrl,
+          'profilePicture': _profilePicUrl, // Save the updated URL
         }, SetOptions(merge: true));
 
         // Update the local state to reflect the changes
@@ -104,6 +104,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
     }
   }
 
+
   void _onLogout() {
     FirebaseAuth.instance.signOut();
   }
@@ -123,12 +124,11 @@ class _SettingsStaffState extends State<SettingsStaff> {
           UploadTask uploadTask = storageRef.putFile(file);
 
           uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-            // print('Upload is ${snapshot.bytesTransferred / snapshot.totalBytes * 100}% complete');
+            // Optional: monitor upload progress
           });
 
           TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
           String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          // print('Download URL: $downloadUrl');
 
           setState(() {
             _tempProfilePicUrl = downloadUrl;
@@ -139,7 +139,6 @@ class _SettingsStaffState extends State<SettingsStaff> {
             SnackBar(content: Text('Profile picture ready to be saved')),
           );
         } catch (e) {
-          // print('Error during upload: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error updating profile picture: $e')),
           );
@@ -151,6 +150,7 @@ class _SettingsStaffState extends State<SettingsStaff> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +324,7 @@ class SettingsCard extends StatelessWidget {
                 onTap: onProfilePicTap,
                 child: profilePicUrl != null && profilePicUrl!.isNotEmpty
                     ? ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                  borderRadius: BorderRadius.circular(50),
                   child: Image.network(
                     profilePicUrl!,
                     height: 80.h,
@@ -332,7 +332,7 @@ class SettingsCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
+                        borderRadius: BorderRadius.circular(50),
                         child: Image.asset(
                           'assets/images/Ellipse 255.png',
                           height: 80.h,
@@ -343,11 +343,14 @@ class SettingsCard extends StatelessWidget {
                     },
                   ),
                 )
-                    : Image.asset(
-                  'assets/images/Ellipse 255.png',
-                  height: 80.h,
-                  width: 80.w,
-                  fit: BoxFit.cover,
+                    : ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    'assets/images/Ellipse 255.png',
+                    height: 80.h,
+                    width: 80.w,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Positioned(
@@ -388,3 +391,5 @@ class SettingsCard extends StatelessWidget {
     );
   }
 }
+
+
