@@ -7,6 +7,7 @@ import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
 import '../../../../constant/colors.dart';
 import '../../../../constant/route.dart';
+import '../views/forgot_password.dart';
 import 'or_text.dart';
 
 class Students extends StatefulWidget {
@@ -88,12 +89,17 @@ class _StudentsState extends State<Students> {
               });
             },
           ),
-          CustomText(
-            inputText: "Forgot password?",
-            textAlign: TextAlign.center,
-            fontSize: 14,
-            weight: FontWeight.w500,
-            color: AppColors.blackColor,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword()));
+            },
+            child: CustomText(
+              inputText: "Forgot password?",
+              textAlign: TextAlign.center,
+              fontSize: 14,
+              weight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
           ),
           SizedBox(height: 8.h),
           _isSending ? Center(child: CircularProgressIndicator()) :

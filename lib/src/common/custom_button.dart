@@ -65,7 +65,7 @@ class CustomButton extends StatelessWidget {
               textAlign: TextAlign.center,
               fontSize: 14,
               weight: FontWeight.w500,
-              color: AppColors.scaffoldBackground,
+              color: titleColor ?? AppColors.scaffoldBackground,
               fontFamily: '',
             ),
       ),
@@ -136,7 +136,7 @@ class CustomizableButton extends StatelessWidget {
               textAlign: TextAlign.center,
               fontSize: 14,
               weight: FontWeight.w500,
-              color: AppColors.blackColor,
+              color: titleColor ?? AppColors.blackColor,
             ),
       ),
     );

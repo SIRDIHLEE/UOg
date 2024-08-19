@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:uog/src/features/auth/presentation/views/forgot_password.dart';
 import '../../../../common/custom_button.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
@@ -87,12 +88,17 @@ class _StaffState extends State<Staff> {
               });
             },
           ),
-          CustomText(
-            inputText: "Forgot password?",
-            textAlign: TextAlign.center,
-            fontSize: 14,
-            weight: FontWeight.w500,
-            color: AppColors.blackColor,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword()));
+            },
+            child: CustomText(
+              inputText: "Forgot password?",
+              textAlign: TextAlign.center,
+              fontSize: 14,
+              weight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
           ),
           SizedBox(height: 8.h),
           _isSending ? Center(child: CircularProgressIndicator()) :
