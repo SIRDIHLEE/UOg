@@ -7,6 +7,7 @@ import '../../../../common/custom_button.dart';
 import '../../../../common/custom_text.dart';
 import '../../../../common/custom_textfield.dart';
 import '../../../../constant/colors.dart';
+import '../../../../constant/route.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -69,7 +70,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed('/signin');
+                  Navigator.of(context).pushReplacementNamed(Routes.signIn);
                 },
               ),
             ],
