@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ── */
+    .app {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 0;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar / Form ── */
+    .sidebar {
+      background: #1d224e;
+      color: #fff;
+      padding: 32px 24px;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .sidebar .subtitle {
+      font-size: 12px;
+      opacity: 0.6;
+      margin-bottom: 28px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin: 24px 0 10px;
+    }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { opacity: 0.4; }
+    .form-group input:focus,
+    .form-group select:focus { border-color: rgba(255,255,255,0.45); }
+    .form-group select option { background: #1d224e; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* ── Items ── */
+    .items-header {
+      display: grid;
+      grid-template-columns: 1fr 70px 90px 28px;
+      gap: 6px;
+      font-size: 11px;
+      opacity: 0.5;
+      margin-bottom: 4px;
+    }
+    .item-row {
+      display: grid;
+      grid-template-columns: 1fr 70px 90px 28px;
+      gap: 6px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .item-row input {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 12px;
+      outline: none;
+      width: 100%;
+    }
+    .item-row input:focus { border-color: rgba(255,255,255,0.4); }
+    .remove-btn {
+      background: rgba(255,80,80,0.2);
+      border: none;
+      border-radius: 6px;
+      color: #ff8080;
+      cursor: pointer;
+      font-size: 16px;
+      height: 32px;
+      line-height: 1;
+      transition: background 0.2s;
+    }
+    .remove-btn:hover { background: rgba(255,80,80,0.4); }
+
+    .add-item-btn {
+      width: 100%;
+      padding: 9px;
+      border-radius: 7px;
+      border: 1px dashed rgba(255,255,255,0.3);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: all 0.2s;
+    }
+    .add-item-btn:hover {
+      border-color: rgba(255,255,255,0.7);
+      color: #fff;
+    }
+
+    .notes-area { resize: vertical; min-height: 70px; }
+
+    .generate-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 9px;
+      border: none;
+      background: #0091a4;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 28px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .generate-btn:hover { background: #007a8a; }
+    .generate-btn:active { transform: scale(0.98); }
+
+    /* ── Preview Panel ── */
+    .preview-panel {
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      align-self: flex-end;
+    }
+    .print-btn, .reset-btn {
+      padding: 9px 20px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .print-btn { background: #1d224e; color: #fff; }
+    .print-btn:hover { background: #0091a4; }
+    .reset-btn { background: #e5e7eb; color: #374151; }
+    .reset-btn:hover { background: #d1d5db; }
+
+    /* ── Invoice Document ── */
+    .invoice-doc {
+      background: #fff;
+      width: 100%;
+      max-width: 760px;
+      border-radius: 12px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    .inv-header {
+      background: linear-gradient(135deg, #1d224e 0%, #0091a4 100%);
+      color: #fff;
+      padding: 36px 40px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .inv-header .logo-area h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .inv-header .logo-area p {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    .inv-header .inv-meta { text-align: right; }
+    .inv-header .inv-meta .inv-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      opacity: 0.9;
+    }
+    .inv-header .inv-meta p { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+    .inv-header .inv-meta span { opacity: 1; font-weight: 600; }
+
+    .inv-body { padding: 32px 40px; }
+
+    .inv-parties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .inv-party h4 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #0091a4;
+      margin-bottom: 8px;
+    }
+    .inv-party p { font-size: 13px; line-height: 1.7; color: #374151; }
+    .inv-party .party-name { font-weight: 700; font-size: 15px; color: #111; }
+
+    /* ── Items Table ── */
+    .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .inv-table thead th {
+      background: #f3f4f6;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #6b7280;
+      text-align: left;
+    }
+    .inv-table thead th:last-child,
+    .inv-table tbody td:last-child { text-align: right; }
+    .inv-table tbody tr { border-bottom: 1px solid #f3f4f6; }
+    .inv-table tbody td {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #374151;
+    }
+    .inv-table tfoot td {
+      padding: 8px 14px;
+      font-size: 13px;
+    }
+    .inv-table tfoot tr.total-row td {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1d224e;
+      padding-top: 12px;
+      border-top: 2px solid #1d224e;
+    }
+    .inv-table tfoot td:last-child { text-align: right; }
+
+    /* ── Status badge ── */
+    .status-badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .status-pending  { background: #fef3c7; color: #92400e; }
+    .status-paid     { background: #d1fae5; color: #065f46; }
+    .status-overdue  { background: #fee2e2; color: #991b1b; }
+
+    .inv-notes {
+      background: #f9fafb;
+      border-left: 3px solid #0091a4;
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .inv-notes h5 { font-size: 11px; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .inv-notes p { font-size: 13px; color: #374151; }
+
+    .inv-footer {
+      background: #f3f4f6;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .inv-footer p { font-size: 11px; color: #9ca3af; }
+    .inv-footer .thank-you { font-size: 13px; font-weight: 600; color: #1d224e; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      color: #9ca3af;
+      gap: 12px;
+      padding: 60px;
+    }
+    .empty-state svg { opacity: 0.3; }
+    .empty-state p { font-size: 14px; }
+
+    /* ── Print styles ── */
+    @media print {
+      body { background: #fff; }
+      .app { display: block; }
+      .sidebar, .preview-actions { display: none !important; }
+      .preview-panel { padding: 0; }
+      .invoice-doc { box-shadow: none; border-radius: 0; max-width: 100%; }
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .preview-panel { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- ══ FORM SIDEBAR ══ -->
+  <aside class="sidebar">
+    <h1>Invoice Generator</h1>
+    <p class="subtitle">Fill in the details and click Generate</p>
+
+    <!-- Sender -->
+    <div class="section-label">Your / Company Details</div>
+    <div class="form-group">
+      <label>Company / Institution Name</label>
+      <input type="text" id="fromName" placeholder="e.g. University of Greenwich" />
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" id="fromAddress" placeholder="e.g. London, SE10 9LS" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="fromEmail" placeholder="finance@university.ac.uk" />
+    </div>
+
+    <!-- Client -->
+    <div class="section-label">Bill To</div>
+    <div class="form-group">
+      <label>Student / Client Name</label>
+      <input type="text" id="toName" placeholder="Full name" />
+    </div>
+    <div class="form-group">
+      <label>Student ID / Reference</label>
+      <input type="text" id="toId" placeholder="e.g. STU-00123" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="toEmail" placeholder="student@email.com" />
+    </div>
+
+    <!-- Invoice meta -->
+    <div class="section-label">Invoice Details</div>
+    <div class="two-col">
+      <div class="form-group">
+        <label>Invoice #</label>
+        <input type="text" id="invNumber" placeholder="INV-001" />
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="invStatus">
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="form-group">
+        <label>Issue Date</label>
+        <input type="date" id="issueDate" />
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" id="dueDate" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Currency</label>
+      <select id="currency">
+        <option value="£">GBP (£)</option>
+        <option value="$">USD ($)</option>
+        <option value="€">EUR (€)</option>
+        <option value="₦">NGN (₦)</option>
+        <option value="¥">JPY (¥)</option>
+      </select>
+    </div>
+
+    <!-- Items -->
+    <div class="section-label">Line Items</div>
+    <div class="items-header">
+      <span>Description</span><span>Qty</span><span>Unit Price</span><span></span>
+    </div>
+    <div id="items-container"></div>
+    <button class="add-item-btn" onclick="addItem()">+ Add Item</button>
+
+    <!-- Notes -->
+    <div class="section-label">Notes / Payment Info</div>
+    <div class="form-group">
+      <textarea class="notes-area" id="notes" placeholder="e.g. Bank: Barclays | Sort: 20-00-00 | Acc: 12345678"></textarea>
+    </div>
+
+    <button class="generate-btn" onclick="generateInvoice()">Generate Invoice</button>
+  </aside>
+
+  <!-- ══ PREVIEW PANEL ══ -->
+  <main class="preview-panel" id="previewPanel">
+    <div class="empty-state" id="emptyState">
+      <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#9ca3af">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <p>Fill in the form and click <strong>Generate Invoice</strong><br>to see a preview here.</p>
+    </div>
+    <div class="preview-actions" id="previewActions" style="display:none;">
+      <button class="reset-btn" onclick="resetPreview()">← Edit</button>
+      <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+    <div id="invoiceOutput"></div>
+  </main>
+</div>
+
+<script>
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  const fmt = (sym, n) => sym + parseFloat(n || 0).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const today = () => new Date().toISOString().split('T')[0];
+  const fmtDate = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' }) : '—';
+
+  let itemCount = 0;
+
+  // ── Set defaults ─────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('issueDate').value = today();
+    const due = new Date(); due.setDate(due.getDate() + 30);
+    document.getElementById('dueDate').value = due.toISOString().split('T')[0];
+    const num = 'INV-' + String(Math.floor(Math.random() * 9000) + 1000);
+    document.getElementById('invNumber').value = num;
+    addItem();
+  });
+
+  // ── Add / remove items ───────────────────────────────────────────────────
+  function addItem() {
+    itemCount++;
+    const id = itemCount;
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.id = 'item-' + id;
+    row.innerHTML = `
+      <input type="text"   placeholder="Description" class="item-desc" />
+      <input type="number" placeholder="1"    class="item-qty"  min="0" step="any" value="1" />
+      <input type="number" placeholder="0.00" class="item-price" min="0" step="any" />
+      <button class="remove-btn" onclick="removeItem(${id})" title="Remove">×</button>`;
+    document.getElementById('items-container').appendChild(row);
+  }
+
+  function removeItem(id) {
+    const el = document.getElementById('item-' + id);
+    if (el) el.remove();
+  }
+
+  // ── Generate ─────────────────────────────────────────────────────────────
+  function generateInvoice() {
+    const fromName    = document.getElementById('fromName').value.trim()  || 'Your Organisation';
+    const fromAddress = document.getElementById('fromAddress').value.trim();
+    const fromEmail   = document.getElementById('fromEmail').value.trim();
+    const toName      = document.getElementById('toName').value.trim()    || 'Client Name';
+    const toId        = document.getElementById('toId').value.trim();
+    const toEmail     = document.getElementById('toEmail').value.trim();
+    const invNumber   = document.getElementById('invNumber').value.trim() || 'INV-001';
+    const status      = document.getElementById('invStatus').value;
+    const issueDate   = document.getElementById('issueDate').value;
+    const dueDate     = document.getElementById('dueDate').value;
+    const sym         = document.getElementById('currency').value;
+    const notes       = document.getElementById('notes').value.trim();
+
+    // Collect items
+    const rows = document.querySelectorAll('.item-row');
+    let itemsHtml = '';
+    let subtotal = 0;
+    rows.forEach(row => {
+      const desc  = row.querySelector('.item-desc').value.trim();
+      const qty   = parseFloat(row.querySelector('.item-qty').value)   || 0;
+      const price = parseFloat(row.querySelector('.item-price').value) || 0;
+      const total = qty * price;
+      subtotal += total;
+      if (desc) {
+        itemsHtml += `<tr>
+          <td>${desc}</td>
+          <td>${qty % 1 === 0 ? qty : qty.toFixed(2)}</td>
+          <td>${fmt(sym, price)}</td>
+          <td>${fmt(sym, total)}</td>
+        </tr>`;
+      }
+    });
+
+    const statusClass = { pending: 'status-pending', paid: 'status-paid', overdue: 'status-overdue' }[status];
+    const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+
+    const notesSection = notes ? `
+      <div class="inv-notes">
+        <h5>Payment Info / Notes</h5>
+        <p>${notes.replace(/\n/g, '<br>')}</p>
+      </div>` : '';
+
+    const html = `
+    <div class="invoice-doc" id="invoiceToPrint">
+      <div class="inv-header">
+        <div class="logo-area">
+          <h2>${fromName}</h2>
+          ${fromAddress ? `<p>${fromAddress}</p>` : ''}
+          ${fromEmail   ? `<p>${fromEmail}</p>`   : ''}
+        </div>
+        <div class="inv-meta">
+          <div class="inv-title">INVOICE</div>
+          <p># <span>${invNumber}</span></p>
+          <p>Issue: <span>${fmtDate(issueDate)}</span></p>
+          <p>Due: <span>${fmtDate(dueDate)}</span></p>
+          <p style="margin-top:8px"><span class="status-badge ${statusClass}">${statusLabel}</span></p>
+        </div>
+      </div>
+
+      <div class="inv-body">
+        <div class="inv-parties">
+          <div class="inv-party">
+            <h4>From</h4>
+            <p class="party-name">${fromName}</p>
+            ${fromAddress ? `<p>${fromAddress}</p>` : ''}
+            ${fromEmail   ? `<p>${fromEmail}</p>`   : ''}
+          </div>
+          <div class="inv-party">
+            <h4>Bill To</h4>
+            <p class="party-name">${toName}</p>
+            ${toId    ? `<p>ID: ${toId}</p>`        : ''}
+            ${toEmail ? `<p>${toEmail}</p>`          : ''}
+          </div>
+        </div>
+
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>${itemsHtml || '<tr><td colspan="4" style="color:#9ca3af;font-style:italic">No items added</td></tr>'}</tbody>
+          <tfoot>
+            <tr><td colspan="3" style="text-align:right;color:#6b7280">Subtotal</td><td>${fmt(sym, subtotal)}</td></tr>
+            <tr class="total-row"><td colspan="3" style="text-align:right">Total Due</td><td>${fmt(sym, subtotal)}</td></tr>
+          </tfoot>
+        </table>
+
+        ${notesSection}
+      </div>
+
+      <div class="inv-footer">
+        <p>Generated ${new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'long',year:'numeric'})}</p>
+        <span class="thank-you">Thank you!</span>
+        <p>${invNumber}</p>
+      </div>
+    </div>`;
+
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('previewActions').style.display = 'flex';
+    document.getElementById('invoiceOutput').innerHTML = html;
+    document.getElementById('invoiceOutput').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Reset ─────────────────────────────────────────────────────────────────
+  function resetPreview() {
+    document.getElementById('emptyState').style.display = 'flex';
+    document.getElementById('previewActions').style.display = 'none';
+    document.getElementById('invoiceOutput').innerHTML = '';
+  }
+</script>
+</body>
+</html>
